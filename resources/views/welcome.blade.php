@@ -69,16 +69,19 @@
             <div class="flex flex-col mx-64">
                 {{-- Call to Action --}}
                 <div class="my-7 h-96 grid grid-rows-2 grid-cols-5 gap-4">
-                    <div class="row-span-2 col-span-3 bg-neutral-600 rounded-md">
+                    <div class="row-span-2 col-span-3 rounded-md overflow-hidden">
+                        <img src="images/Banner Big.png" class="w-full h-full object-cover"/>
                     </div>
-                    <div class="col-span-2 bg-neutral-400 rounded-md">
+                    <div class="col-span-2 rounded-md overflow-hidden">
+                        <img src="images/Banner-top-right.png" class="w-full h-full object-cover object-top"/>
                     </div>
-                    <div class="col-span-2 bg-neutral-200 rounded-md">
+                    <div class="col-span-2 rounded-md overflow-hidden">
+                        <img src="images/Banner-bot-right.png" class="w-full h-full object-cover object-center"/>
                     </div>
                 </div>
 
                 {{-- Summary --}}
-                <div class="my-7 h-24 bg-white shadow-lg rounded-md flex flex-row justify-evenly items-center transition ease-out duration-300 hover:-translate-y-0.5">
+                <div class="mb-7 h-24 bg-white shadow-lg rounded-md flex flex-row justify-evenly items-center transition ease-out duration-300 hover:-translate-y-0.5">
                     <div class="flex flex-row items-center">
                         <i class="fa-solid fa-truck-fast text-[#00B207] text-2xl mr-5"></i>
                         <div>
@@ -103,7 +106,75 @@
                 </div>
             </div>
 
-            {{-- Product Contents: Less Priority --}}
+            {{-- Product Contents --}}
+            <div class="grid grid-cols-5 mx-64 gap-4 my-7">
+                @foreach ($products as $product)
+                <a href="#">
+                    <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
+                        <img src="{{ 'products/' . $product->product_image_url }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
+                        <div class="p-3">
+                            <p class="text-sm">{{ truncateString($product->product_name) }}</p>
+                            <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
+                            <div class="flex flex-row items-center mt-1">
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                    {{-- @foreach ($product->productImages as $image)
+                        <img src="{{ 'products/' . $image->image_path }}" alt="{{ $product->product_name }}">
+                    @endforeach --}}
+                @endforeach
+                @foreach ($products as $product)
+                <a href="#">
+                    <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
+                        <img src="{{ 'products/' . $product->product_image_url }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
+                        <div class="p-3">
+                            <p class="text-sm">{{ truncateString($product->product_name) }}</p>
+                            <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
+                            <div class="flex flex-row items-center mt-1">
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                    {{-- @foreach ($product->productImages as $image)
+                        <img src="{{ 'products/' . $image->image_path }}" alt="{{ $product->product_name }}">
+                    @endforeach --}}
+                @endforeach
+                @foreach ($products as $product)
+                <a href="#">
+                    <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
+                        <img src="{{ 'products/' . $product->product_image_url }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
+                        <div class="p-3">
+                            <p class="text-sm">{{ truncateString($product->product_name) }}</p>
+                            <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
+                            <div class="flex flex-row items-center mt-1">
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>   
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                    {{-- @foreach ($product->productImages as $image)
+                        <img src="{{ 'products/' . $image->image_path }}" alt="{{ $product->product_name }}">
+                    @endforeach --}}
+                @endforeach
+            </div>
 
             {{-- Newsletter --}}
             <div class="items-center bg-[#E6E6E6] px-64 py-7 grid grid-cols-5">

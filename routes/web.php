@@ -2,12 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LandingPageController;
 
 use App\Http\Controllers\HomeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [LandingPageController::class, 'index']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -21,12 +20,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-
-// route::get('admin/dashboard', [HomeController::class, 'index'])->
-// middleware(['auth','admin']);
-
-Route::middleware(['auth', 'admin'])->group(function() {
-    Route::get('admin/dashboard', [HomeController::class, 'index']);
-});
+route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'admin']);
 
 

@@ -21,5 +21,11 @@ class Products extends Model
         'product_rating',
         'product_img_url',
         'items_sold',
+        'price',
     ];
+
+    public function productImages()
+    {
+        return $this->hasMany(ProductImages::class, 'product_id', 'id');
+    }
 }
