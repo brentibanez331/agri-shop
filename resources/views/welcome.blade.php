@@ -153,7 +153,7 @@
                     @endforeach --}}
                 @endforeach
                 @foreach ($products as $product)
-                <a href="#">
+                <a href="{{ route("product", $product->id) }}">
                     <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
                         <img src="{{ 'products/' . $product->product_image_url }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
                         <div class="p-3">

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->tinyInteger('is_admin')->default(0);
             $table->string('address')->nullable();
             $table->string('phone_number')->nullable();
-            $table->string('image_url')->nullable();
+            $table->string('image_url')->nullable()->default('unknown.jpg');
             $table->date('birthdate')->nullable();
             $table->string('gender')->nullable();
             // $table->timestamp('email_verified_at')->nullable();

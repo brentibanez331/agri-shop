@@ -17,8 +17,10 @@ return new class extends Migration
             $table->string('store_name');
             $table->integer('no_of_products');
             $table->decimal('merchant_rating');
-            $table->text('image_url')->nullable();
+            $table->text('image_url')->nullable()->default('unknown.jpg');
             $table->string('city');
+            $table->string('country');
+            $table->string('state');
             $table->rememberToken();
             $table->timestamps();
 

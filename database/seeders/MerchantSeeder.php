@@ -20,6 +20,8 @@ class MerchantSeeder extends Seeder
                 'merchant_rating' => 0,
                 'image_url' => null,
                 'city' => 'Bacolod',
+                'country' => 'Philippines',
+                'state' => 'Negros Occ',
             ],
 
             [
@@ -30,6 +32,8 @@ class MerchantSeeder extends Seeder
                 'merchant_rating' => 0,
                 'image_url' => null,
                 'city' => 'Taguig',
+                'country' => 'Philippines',
+                'state' => 'Manila',
             ],
         ]);
     }

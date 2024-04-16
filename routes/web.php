@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingPageController;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', [LandingPageController::class, 'index']);
 
@@ -21,5 +22,6 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'admin']);
-
+Route::get('/product/{product}', [ProductController::class, 'show'])->name('product');
+// Route::get('/userdelete/{id}', [UserController::class, 'delete'])->name('admin.deleteuser');
 

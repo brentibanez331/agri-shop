@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        
         // User::factory(10)->create();
 
         // User::factory()->create([
@@ -24,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TagSeeder::class);
         $this->call(ProductSeeder::class);
         $this->call(ProductImageSeeder::class);
+        $this->call(RatingSeeder::class);
     }
 }

@@ -17,6 +17,8 @@ class Merchants extends Model
         'no_of_products',
         'merchant_rating',
         'image_url',
+        'country',
         'city',
+        'state',
     ];
 }
