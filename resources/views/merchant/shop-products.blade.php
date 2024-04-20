@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{{$product->product_name}}</title>
+    <title>My Shops</title>
     @vite('resources/css/app.css')
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
@@ -44,182 +44,72 @@
                     </div>
                 </header>
                 <div class="my-5 mx-64 flex justify-between items-center">
-                    <a class="text-xl font-bold" href="/">AgroShop</a>
-                    <div class="relative w-7/12 flex justify-center">
-                        <input type="text" placeholder="Search for Products"
-                            class="w-full transition ease-in-out duration-300 focus:ring-0 focus:border-slate-500 rounded-sm border-slate-300">
-                        <div class="absolute inset-y-0 right-0 pr-1 flex items-center">
-                            <button class="text-white bg-[#259B00] px-5 py-1 rounded-sm">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <p class="text-xl font-bold">AgroShop</p>
+                    
                     <a href="#"><i class="fa-solid fa-cart-shopping text-2xl"></i></a>
                 </div>
                 <hr>
                 </hr>
-
             </div>
         </div>
 
-        {{-- Product Details --}}
-        <div class="mx-64 bg-white my-5 p-5 flex flex-row rounded-md shadow">
-            <div class="w-5/12 pr-7">
-                <img class="w-full h-96 object-cover rounded-md" src="{{asset('storage/products/' . $product->product_image_url)}}" />
+        <div class="px-64 flex w-full mt-10 justify-between">
+            <div>
+                <a href="#" class="py-1.5 px-5 mr-2 text-[#259B00] hover:bg-[#259B00] hover:text-white transition ease-out border-[#259B00] border rounded-full">Orders</a>
+                <a href="#" class="py-1.5 px-5 bg-[#259B00] text-white rounded-full">Products</a>
             </div>
-            <div class="flex flex-col w-7/12">
-                <h1 class="font-bold text-xl">{{ $product->product_name }}</h1>
-                <div class="flex mt-2 items-center">
-                    <p>
-                        {{$product->product_rating}}
-                    </p>
-                    <div class="flex flex-row items-center ml-2">
-                        <i class="fa-regular fa-star mr-0.5"></i>
-                        <i class="fa-regular fa-star mr-0.5"></i>
-                        <i class="fa-regular fa-star mr-0.5"></i>
-                        <i class="fa-regular fa-star mr-0.5"></i>
-                        <i class="fa-regular fa-star mr-0.5"></i>
-                    </div>
-                    <div class="h-full w-[1px] bg-neutral-300 mx-3"></div>
-                    <p class="">{{$noOfRatings}} Ratings</p>
-                    <div class="h-full w-[1px] bg-neutral-300 mx-3"></div>
-                    <p class="">{{$product->items_sold}} Sold</p>
+            <div class="relative w-3/12 flex justify-center">
+                <input type="text" placeholder="Search for Products"
+                    class="w-full transition ease-in-out duration-300 focus:ring-0 focus:border-slate-500 border-slate-300 rounded-full">
+                <div class="absolute inset-y-0 right-0 pr-1 flex items-center">
+                    <button class="text-white bg-[#259B00] px-5 py-1 rounded-full">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
                 </div>
-                <h2 class="mt-3 text-3xl font-semibold text-[#018f07]">₱ {{ $product->price }}</h2>
-                <div class="flex flex-col mt-10">
-                    <div class="flex mb-5 w-full">
-                        <p class="w-3/12 text-neutral-500">Protection</p>
-                        <p>Merchandise Protection</p>
-                    </div>
-                    <div class="flex mb-5 w-full">
-                        <p class="w-3/12 text-neutral-500">Shipping</p>
-                        <div class="flex flex-col w-6/12">
-                            <div class="flex">
-                                <p class="text-neutral-500 w-6/12">Shipping to</p>
-                                
-                                    @auth
-                                        {{-- Display Shipping  --}}
-                                        <p>User Details Here</p>
-                                    @else
-                                        <a class="underline hover:text-neutral-500 transition ease-in-out duration-150" href="{{route('login')}}">Login to View</a>
-                                    @endauth
-                            </div>
-                            <div class="flex">
-                                <p class="text-neutral-500 w-6/12">Shipping fee</p>
-                                    @auth
-                                        {{-- Display Shipping  --}}
-                                        <p>Shipping Fee Here</p>
-                                    @else
-                                        
-                                    @endauth
-                            </div>
-
-                        </div>
-
-                    </div>
-                    <div class="flex mb-5 w-full">
-                        <p class="w-3/12 text-neutral-500">Options</p>
-                        <p>Insert Options Here (Optional)</p>
-                    </div>
-                    <div class="flex mb-5 w-full items-center">
-                        <p class="w-3/12 text-neutral-500">Quantity</p>
-                        <div class="flex">
-                            <button id="minus-btn" class="w-10 border hover:border-neutral-700 transition ease-in-out duration-150 h-8 border-neutral-300">-</button>
-                            <input type="number" id="quantity-input" class="quantity-counter border-neutral-300 focus:border-neutral-700 text-center w-20 h-8" value="1" min="1"/>
-                            <button id="plus-btn" class="w-10 border hover:border-neutral-700 transition ease-in-out duration-150 h-8 border-neutral-300">+</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex mt-3">
-                    {{-- Might have to check if this works with the input above, otherwise wrap in form, styling for now --}}
-                    <a href="#" class="w-34 text-center border-[#018f07] border bg-[#d1edd3] hover:bg-[#e4ede4] transition ease-in-out duration-150 px-10 py-2.5 mr-3 text-[#018f07]">
-                        Add to Cart
-                    </a>
-                    <a href="#" class="w-40 text-center border-[#259B00] bg-[#259B00] hover:bg-[#2FB605] transition ease-in-out duration-150 text-white border px-10 py-2.5">
-                        Buy Now
-                    </a>
-                </div>
-
             </div>
         </div>
 
-        {{-- Merchant Details --}}
-        <div class="mx-64 bg-white my-5 p-5 rounded-md shadow">
-            <div class="flex w-full">
+        <div class="mx-64 mt-6 px-7 py-5 flex items-center bg-white rounded-md shadow">
             <div class="flex items-center">
-                @if($product->merchant->image_url == null)
-                    <img src="{{asset('merchants/unknown.jpg')}}" class="w-24 rounded-full border mr-5"/>
-                @else
-                    <img src="{{asset('merchants/' . $product->merchant->image_url)}}" class="w-24 rounded-full border mr-5"/>
-                @endif
-                <div>
-                    <p class="font-semibold">{{$product->merchant->store_name}}</p>
-                    {{-- Might need to change this for functionality --}}
-                    <div class="flex mt-3">
-                        {{-- Might have to check if this works with the input above, otherwise wrap in form, styling for now --}}
-                        <a href="#" class="w-24 px-1.5 py-1 text-sm text-center border-[#018f07] border bg-[#d1edd3] hover:bg-[#e4ede4] transition ease-in-out duration-150 mr-3 text-[#018f07]">
-                            Chat Now
-                        </a>
-                        <a href="#" class="w-24 px-1.5 py-1 text-sm text-center border-[#259B00] bg-white hover:text-white hover:bg-[#2FB605] transition ease-in-out duration-150 text-black border">
-                            View Shop
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="border-l mx-6"></div>
-            <div class="w-7/12 py-3 grid grid-cols-3 gap-x-10 text-sm items-center">
-                <div class="col-span-1 flex justify-between">
-                    <p>Rating</p>
-                    <p class="text-[#018f07]">{{$product->merchant->merchant_rating}}</p>
-                </div>
-                <div class="col-span-1 flex justify-between">
-                    <p>City</p>
-                    <p class="text-[#018f07]">{{$product->merchant->city}}</p>
-                </div>
-                <div class="col-span-1 flex justify-between">
-                    <p>State</p>
-                    <p class="text-[#018f07]">Neg Occ</p>
-                </div>
-                <div class="col-span-1 flex justify-between">
-                    <p>Products</p>
-                    <p class="text-[#018f07]">{{$product->merchant->no_of_products}}</p>
-                </div>
-                <div class="col-span-1 flex justify-between">
-                    <p>Country</p>
-                    <p class="text-[#018f07]">{{$product->merchant->country}}</p>
-                </div>
+                <img src="{{ asset('storage/merchants/' . $merchant->image_url) }}" class="w-10 rounded-full border mr-3"/>
+                <h1 class="text-xl"> {{$merchant->store_name}}</h1>
             </div>
         </div>
-        </div>
+        @if($products->isEmpty())
+            <div class="items-center flex-col flex justify-center my-10">
+                <h2 class="text-center text-3xl font-semibold leading-loose">Start Your Earning Journey😄</h2>
+                <p class="text-center text-xl">Add Your First Product and Watch Your Earnings Grow</p>
+                <a href="{{route('add-product', $merchant->id)}}" class="mt-10 bg-[#259B00] px-4 py-2 rounded-full hover:opacity-70 transition ease-in-out text-white">+ Add Product</a>
+            </div>
+        @else
+            <div class="mx-64 my-5 flex justify-end"><a href="{{route('add-product', $merchant->id)}}" class="bg-[#259B00] px-4 py-1 rounded-full hover:opacity-70 transition ease-in-out text-white">+ New Product</a></div>
 
-        <div class="mx-64 bg-white my-3 px-5 py-7 rounded-md shadow">
-            <h3 class="text-xl mb-3.5">Product Description</h3>
-            <p>{{$product->description}}</p>
-        </div>
+        @endif
 
-        <div class="mx-64 bg-white my-3 px-5 py-7 rounded-md shadow">
-            <h3 class="text-xl mb-3.5">Product Ratings</h3>
-            <p>Insert total ratings here</p>
-            @forelse($reviews as $review)
-                @php
-                    $emptyStars = 5 - $review->rating;
-                @endphp
-                <div class="border-b py-7 flex">
-                    <img class="w-10 h-10 object-cover rounded-full mr-5" src=" {{asset('users/' . $review->user->image_url)}} "/>
-                    <div>
-                        <p>{{$review->user->username}}</p>
-                        @for($i = 0; $i < $review->rating; $i++)
-                            <i class="fa-solid fa-star text-xs" style="color: #FFD43B"></i>
-                        @endfor
-                        @for($i = 0; $i < $emptyStars; $i++)
-                            <i class="fa-regular fa-star text-xs" style="color: #FFD43B"></i>
-                        @endfor
 
-                        <p class="mt-3"> {{$review->review_text}} </p>
+        {{-- Shops --}}
+        <div class="grid grid-cols-5 mx-64 gap-4 my-3">
+            @forelse ($products as $product)
+                <a href="{{ route("product", $product->id) }}">
+                    <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
+                        <img src="{{ asset('storage/products/' . $product->product_image_url) }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
+                        <div class="p-3">
+                            <p class="text-sm text-neutral-500"> {{ $product->created_at->format('m/d/Y h:i A') }} </p>
+                            <p class="text-sm mt-2 h-10">{{ truncateString($product->product_name) }}</p>
+                            <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
+                            <div class="flex flex-row items-center mt-1">
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>   
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </a>
                 @empty
-                <p>No reviews available. Buy this product to review!</p>
+
             @endforelse
         </div>
 

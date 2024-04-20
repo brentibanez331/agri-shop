@@ -21,6 +21,13 @@
                             <nav class="-mx-3 flex flex-1 justify-end">
                                 @auth
                                     <a
+                                        href="{{ route('your-shop') }}"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                    >
+                                        My Stores
+                                    </a>
+                                    <div class="border-l my-1.5 opacity-50"></div>
+                                    <a
                                         href="{{ url('/dashboard') }}"
                                         class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                                     >
@@ -109,67 +116,27 @@
             {{-- Product Contents --}}
             <div class="grid grid-cols-5 mx-64 gap-4 my-7">
                 @foreach ($products as $product)
-                <a href="#">
-                    <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
-                        <img src="{{ 'products/' . $product->product_image_url }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
-                        <div class="p-3">
-                            <p class="text-sm">{{ truncateString($product->product_name) }}</p>
-                            <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
-                            <div class="flex flex-row items-center mt-1">
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>
+                    <a href="{{ route("product", $product->id) }}">
+                        <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
+                            <img src="{{ asset('storage/products/' . $product->product_image_url) }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
+                            <div class="p-3">
+                                <p class="text-sm h-10">{{ truncateString($product->product_name) }}</p>
+                                <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
+                                <div class="flex flex-row items-center">
+                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                    <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>
+                                </div>
+                                <div class="flex items-center mt-1.5">
+                                    <i class="fa-solid fa-location-dot mr-1.5" style="color: #797979;"></i>
+                                    <p class="text-xs text-[#797979]">{{ $product->merchant->city }}, {{ $product->merchant->country }}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-                    {{-- @foreach ($product->productImages as $image)
-                        <img src="{{ 'products/' . $image->image_path }}" alt="{{ $product->product_name }}">
-                    @endforeach --}}
-                @endforeach
-                @foreach ($products as $product)
-                <a href="#">
-                    <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
-                        <img src="{{ 'products/' . $product->product_image_url }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
-                        <div class="p-3">
-                            <p class="text-sm">{{ truncateString($product->product_name) }}</p>
-                            <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
-                            <div class="flex flex-row items-center mt-1">
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-                    {{-- @foreach ($product->productImages as $image)
-                        <img src="{{ 'products/' . $image->image_path }}" alt="{{ $product->product_name }}">
-                    @endforeach --}}
-                @endforeach
-                @foreach ($products as $product)
-                <a href="{{ route("product", $product->id) }}">
-                    <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
-                        <img src="{{ 'products/' . $product->product_image_url }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
-                        <div class="p-3">
-                            <p class="text-sm">{{ truncateString($product->product_name) }}</p>
-                            <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
-                            <div class="flex flex-row items-center mt-1">
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>   
-                            </div>
-                        </div>
-                    </div>
-                </a>
+                    </a>
                     {{-- @foreach ($product->productImages as $image)
                         <img src="{{ 'products/' . $image->image_path }}" alt="{{ $product->product_name }}">
                     @endforeach --}}

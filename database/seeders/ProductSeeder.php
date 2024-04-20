@@ -50,7 +50,8 @@ class ProductSeeder extends Seeder
                 'product_rating' => 0,
                 'product_image_url' => 'cn-11134207-7r98o-locdixsbc2brcd.jpg',
                 'items_sold' => 0,
-                'price' => 180
+                'price' => 180,
+                'created_at' => now()
             ],
 
             [
@@ -70,7 +71,8 @@ class ProductSeeder extends Seeder
                 'product_rating' => 0,
                 'product_image_url' => 'sg-11134201-23010-yvi84mdzqulv87.jpg',
                 'items_sold' => 0,
-                'price' => 365
+                'price' => 365,
+                'created_at' => now() 
             ],
         ]);
     }

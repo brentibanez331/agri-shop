@@ -27,6 +27,7 @@ return new class extends Migration
             $table->text('product_image_url')->nullable();
             $table->integer('items_sold');
             $table->integer('price');
+            $table->timestamps();
 
             $table->foreign('merchant_id')->references('id')->on('merchants')->onDelete('cascade');
             $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');

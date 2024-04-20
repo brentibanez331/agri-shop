@@ -75,57 +75,45 @@
     </div>
 
     <div class="flex justify-center w-full my-20">
-        {{-- <x-auth-session-status class="mb-4" :status="session('status')" /> --}}
-    <form method="POST" action="{{ route('login_user') }}" class="w-4/12 shadow-md px-7 py-4">
-        @csrf
-        <h2 class="text-3xl font-bold text-center mb-3.5">Welcome Back!</h2>
-        <div class="grid gap-y-3">
-            <div class="flex flex-col">
-                <label for="email" class="text-sm leading-6">Email</label>
-                <input id="email" type="email" name="email" class="rounded-md" required autofocus autocomplete="email"/>
-            </div>
-
-            <div class="flex flex-col">
-                <label for="password" class="text-sm leading-6">Password</label>
-                <div class="relative">
-                    <input id="password" type="password" name="password" class="rounded-md w-full" required autocomplete="new-password"/>
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                        <button type="button" class="toggle-password" aria-label="Toggle Password Visibility">
-                            <svg class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
+        <form method="POST" action="{{ route('update-profile')}}" class="w-5/12 shadow-md px-7 py-7">
+            @csrf
+            <h2 class="text-3xl font-bold text-center">Profile Information</h2>
+            {{-- <input name="photo" type="file" id="photo" class="mt-10"/> --}}
+            <div class="grid grid-cols-2 gap-4 mt-10">
+                <div class="col-span-2 flex flex-col w-full">
+                    <label for="username" class="text-sm leading-6">Username</label>
+                    <input id="username" type="text" name="username" class="rounded-md" autofocus />
+                </div>
+                <div class="col-span-2 flex flex-col w-full">
+                    <label for="address" class="text-sm leading-6">Address</label>
+                    <input id="address" type="text" name="address" class="rounded-md" autofocus autocomplete="address-line1"/>
+                </div>
+                <div class="col-span-2 flex flex-col">
+                    <label for="phone_number" class="text-sm leading-6">Phone Number</label>
+                    <input id="phone_number" type="tel" name="phone_number" class="rounded-md" autofocus autocomplete="tel"/>
+                </div>
+                <div class="flex flex-col">
+                    <label for="birthdate" class="text-sm leading-6">Birthdate</label>
+                    <input id="birthdate" type="date" name="birthdate" class="rounded-md" required autofocus autocomplete="bday"/>
+                </div>
+                <div class="flex flex-col">
+                    <label for="gender" class="text-sm leading-6">Gender</label>
+                    <select id="gender" name="gender" class="rounded-md" autofocus>
+                        <option value="" disabled selected>Select a gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                        <option value="Declined">Prefer not to say</option>
+                    </select>
                 </div>
             </div>
-        </div>
-        <div class="flex justify-between">
-            <div class="block mt-4">
-                <label for="remember_me" class="inline-flex items-center">
-                    <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                    <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-                </label>
+            <div class="mt-10 flex justify-center">
+                <a href="{{route('welcome')}}" class="rounded-full w-40 text-center border-[#018f07] border bg-[#d1edd3] hover:bg-[#e4ede4] transition ease-in-out duration-150 px-10 py-2 mr-3 text-[#018f07]">Skip</a>
+                <button class="rounded-full w-40 text-center border-[#259B00] bg-[#259B00] hover:bg-[#2FB605] transition ease-in-out duration-150 text-white border px-10 py-2">
+                    Done!
+                </button>
             </div>
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
-                @endif
-            </div>
-        </div>
-        <div class="flex items-center justify-center mt-6">
-            <button class="bg-[#00B207] text-white w-full py-2 rounded-full hover:opacity-70 transition ease-in-out duration-150">Login</button>
-        </div>
-        <div class="flex items-center justify-center mt-4">
-            <p class="text-gray-600 text-sm mr-2">Don't have an account?</p>
-            <a class="underline font-bold text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('register') }}">
-                {{ __('Sign Up') }}
-            </a>
-        </div>
-        <!-- Remember Me -->
-    </form>
+        </form>
     </div>
 
     {{-- Newsletter --}}
@@ -198,3 +186,4 @@
     <script src="js/passwordToggle.js"></script>
 </body>
 </html>
+

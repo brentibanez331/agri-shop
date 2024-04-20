@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('city');
             $table->string('country');
             $table->string('state');
+            $table->string('pickup_address');
+            $table->string('postal_code');
+            $table->string('tin');
+            $table->string('reg_address');
             $table->rememberToken();
             $table->timestamps();
 

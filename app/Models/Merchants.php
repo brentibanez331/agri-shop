@@ -15,10 +15,19 @@ class Merchants extends Model
         'user_id',
         'store_name',
         'no_of_products',
+        'pickup_address',
+        'reg_address',
         'merchant_rating',
         'image_url',
         'country',
         'city',
         'state',
+        'postal_code',
+        'tin',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Products::class, 'merchant_id');
+    }
 }
