@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('product_name');
             $table->text('description');
             $table->integer('no_of_stocks');
-            $table->decimal('product_rating');
+            $table->decimal('product_rating', 8, 1);
             $table->text('product_image_url')->nullable();
             $table->integer('items_sold');
             $table->integer('price');

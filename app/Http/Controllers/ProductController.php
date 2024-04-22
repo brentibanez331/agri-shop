@@ -9,20 +9,80 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use App\Models\Products;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Merchants;
 use App\Models\Ratings;
 
 class ProductController extends Controller
 {
-    public function addProduct(Merchants $merchant){
-        return view('add-product', compact('merchant'));
+    public function edit($productId, $merchantId){
+        $product = Products::findOrFail($productId);
+        $merchant = Merchants::findOrFail($merchantId);
+        return view('product.edit', compact('product', 'merchant'));
     }
 
-            // $validated = $request->validate([
-        //     'min_amt' => 'required|numeric',
-        //     'max_amt' => 'required|numeric',
-        //     'rates' => 'required|numeric',
-        // ]);
+    public function add(Merchants $merchant){
+        return view('product.add', compact('merchant'));
+    }
+
+    public function delete($productId, $merchantId){
+
+        try {
+            // Your code that may throw an exception
+            $product = Products::findOrFail($productId);
+            $merchant = Merchants::findOrFail($merchantId);
+            $product->delete();
+
+            $merchant = Merchants::where('id', $merchantId)->first();
+
+            $merchant->no_of_products -= 1;
+            $merchant->save();
+
+            return redirect()->route('manage-shop', compact('merchant'));
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Handle the exception, for example, return a response or log it
+            return response()->json(['error' => 'No Found Record'], 404);
+        } catch (\Exception $e) {
+            // Handle other types of exceptions
+            // Log the exception or return a generic error response
+            Log::error($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function update(Request $request, Products $product){
+        try {
+            $newPhotoFileName = "";
+            if ($request->hasFile('photo')) {
+                // Delete the previous image from storage
+                $previousImagePath = 'public/products/' . $product->product_image_url;
+                if (Storage::exists($previousImagePath)) {
+                    Storage::delete($previousImagePath);
+                }
+    
+                // Upload the new photo to storage
+                $newPhotoFileName = time() . '.' . $request->photo->extension();
+                $request->photo->storeAs('public/products', $newPhotoFileName);
+                $product->product_image_url = $newPhotoFileName;
+            }
+
+            $product->update([
+                'product_name' => $request->product_name,
+                'description' => $request->description,
+                'no_of_stocks' => $request->no_of_stocks,
+                'price' => $request->price,
+            ]);
+            return redirect()->back()->with('message', 'Updated Product Successfully');;
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Handle the exception, for example, return a response or log it
+            return response()->json(['error' => 'No Found Record'], 404);
+        } catch (\Exception $e) {
+            // Handle other types of exceptions
+            // Log the exception or return a generic error response
+            Log::error($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
     public function storeProduct(Request $request){
 
@@ -56,6 +116,11 @@ class ProductController extends Controller
             $product->product_image_url = $photoFileName;
             $product->saveOrFail();
 
+            $merchant = Merchants::where('id', $validatedData['merchant_id'])->first();
+
+            $merchant->no_of_products += 1;
+            $merchant->save();
+
             return redirect()->route('manage-shop', ['merchant' => $validatedData['merchant_id']]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Handle the exception, for example, return a response or log it
@@ -71,9 +136,15 @@ class ProductController extends Controller
     public function show(Products $product): View|RedirectResponse|JsonResponse
     {
         try {
-            $noOfRatings = Ratings::where('product_id', $product->id)->count();
+            $ratings = Ratings::where('product_id', $product->id)
+                ->selectRaw('rating, count(*) as count')
+                ->groupBy('rating')
+                ->get()
+                ->keyBy('rating');
+
+            $no_of_ratings = Ratings::where('product_id', $product->id)->count();
             $reviews = Ratings::where('product_id', $product->id)->get();
-            return view('product', compact('product', 'noOfRatings', 'reviews'));
+            return view('product.index', compact('product', 'no_of_ratings', 'ratings', 'reviews'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Handle the exception, for example, return a response or log it
             return response()->json(['error' => 'No Found Record'], 404);

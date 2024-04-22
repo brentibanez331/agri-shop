@@ -15,3 +15,25 @@
 .quantity-counter[type=number] {
     -moz-appearance: textfield;
 }
+
+.rating-progress .progress{
+    flex: 1 1 0;
+}
+
+.star-outer::before{
+    content: "\2605 \2605 \2605 \2605 \2605";
+    color: rgba(23, 23, 23, 0.533);
+}
+
+.star-inner::before{
+    content: "\2605 \2605 \2605 \2605 \2605";
+    color: #FFD43B;
+}
+
+table {
+    border-collapse: collapse;
+  }
+  
+  table tbody {
+    border-top: 15px solid white;
+  }

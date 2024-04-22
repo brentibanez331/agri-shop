@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
+use App\Models\ShoppingCart;
 
 class RegisteredUserController extends Controller
 {
@@ -48,6 +49,12 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        $cart = new ShoppingCart;
+        $cart->user_id = $user->id;
+        $cart->total_items = 0;
+        $cart->total_cost = 0.0;
+        $cart->saveOrFail();
 
         return redirect(route('continue-profile', absolute: false));
     }

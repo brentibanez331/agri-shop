@@ -47,8 +47,8 @@ class ProductSeeder extends Seeder
                 
                 Intercept sunlight which help warming the soil result for faster growth of the plants or vegetables',
                 'no_of_stocks' => 100,
-                'product_rating' => 0,
-                'product_image_url' => 'cn-11134207-7r98o-locdixsbc2brcd.jpg',
+                'product_rating' => 5.0,
+                'product_image_url' => '1713745371.jpg',
                 'items_sold' => 0,
                 'price' => 180,
                 'created_at' => now()
@@ -68,7 +68,7 @@ class ProductSeeder extends Seeder
                 【Delivery】Takes around 2 days to arrive NCR and 2-5 days to other provinces;
                 【Warranty】If these seed germination tray fail to meet your expectations, dont hesitate to contact us and benefit from our 100% customer satisfaction guarantee policy!',
                 'no_of_stocks' => 50,
-                'product_rating' => 0,
+                'product_rating' => 4.0,
                 'product_image_url' => 'sg-11134201-23010-yvi84mdzqulv87.jpg',
                 'items_sold' => 0,
                 'price' => 365,

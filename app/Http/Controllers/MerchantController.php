@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Merchants;
+use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class MerchantController extends Controller
 {
@@ -14,8 +16,70 @@ class MerchantController extends Controller
         return view('merchant.edit', compact('merchant'));
     }
 
-    public function update(Request $request){
-        
+    public function show(Merchants $merchant){
+        $products = $merchant->products()->orderBy('created_at', 'desc')->get()->map(function ($product) {
+            $product->created_at = $product->created_at->setTimezone('Asia/Manila');
+            return $product;
+        });
+
+        // Needs some fixing
+        $no_of_ratings = Ratings::where('user_id', $merchant->id)->count();
+
+        return view('merchant.view-products', compact('products', 'merchant'));
+    }
+
+    public function delete(Merchants $merchant){
+        try {
+            // Your code that may throw an exception
+            $merchant->delete();
+            return redirect()->route('your-shop');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Handle the exception, for example, return a response or log it
+            return response()->json(['error' => 'No Found Record'], 404);
+        } catch (\Exception $e) {
+            // Handle other types of exceptions
+            // Log the exception or return a generic error response
+            Log::error($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function update(Request $request, Merchants $merchant){
+        try {
+            $newPhotoFileName = "";
+            if ($request->hasFile('photo')) {
+                // Delete the previous image from storage
+                $previousImagePath = 'public/merchants/' . $merchant->image_url;
+                if (Storage::exists($previousImagePath)) {
+                    Storage::delete($previousImagePath);
+                }
+    
+                // Upload the new photo to storage
+                $newPhotoFileName = time() . '.' . $request->photo->extension();
+                $request->photo->storeAs('public/merchants', $newPhotoFileName);
+                $merchant->image_url = $newPhotoFileName;
+            }
+
+            $merchant->update([
+                'store_name' => $request->store_name,
+                'pickup_address' => $request->pickup_address,
+                'reg_address' => $request->reg_address,
+                'country' => $request->country,
+                'city' => $request->city,
+                'state' => $request->state,
+                'postal_code' => $request->postal_code,
+                'tin' => $request->tin,
+            ]);
+            return redirect()->back();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Handle the exception, for example, return a response or log it
+            return response()->json(['error' => 'No Found Record'], 404);
+        } catch (\Exception $e) {
+            // Handle other types of exceptions
+            // Log the exception or return a generic error response
+            Log::error($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     public function store(Request $request){

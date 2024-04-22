@@ -55,11 +55,16 @@
 
         <div class="mx-64 mt-6 px-7 py-5 flex items-center bg-white rounded-md shadow">
             <div class="flex items-center">
-                <img src="{{ asset('storage/merchants/' . $merchant->image_url)}}" class="w-10 rounded-full border mr-3"/>
+                @if($merchant->image_url == null)
+                    <img src="{{ asset('storage/merchants/unknown.jpg')}}" class="w-10 rounded-full border mr-3"/>
+                @else
+                    <img src="{{ asset('storage/merchants/' . $merchant->image_url)}}" class="w-10 rounded-full border mr-3"/>
+                @endif
+                
                 <h1 class="text-xl"> {{$merchant->store_name}}</h1>
             </div>
         </div>
-        
+
         @if ($errors->any())
         @foreach ($errors->all() as $error)
           <div
@@ -82,21 +87,21 @@
           @endforeach
         @endif
 
-        <div class="mx-64 my-7 bg-white shadow">
+        <div class="mx-64 mt-7 mb-14 rounded-md bg-white shadow">
             <form class="w-full p-10 flex flex-col" method="POST" action="{{ route('store-product') }}" enctype="multipart/form-data">
                 <h3 class="text-2xl mb-3.5"><i class="fa-solid fa-plus mr-2 text-[#259B00]"></i>Add a New Product</h3>
                 @csrf
                 <input type="hidden" name="merchant_id" value="{{$merchant->id}}">
                 <div class="flex flex-col">
-                    <label for="product_name" class="text-sm leading-6 mt-7">Product Name</label>
+                    <label for="product_name" class="text-md leading-6 mt-7">Product Name</label>
                     <input id="product_name" type="text" name="product_name" class="rounded-md" required autofocus/>
                 </div>
                 <div class="flex flex-col">
-                    <label for="description" class="text-sm leading-6 mt-4">Description</label>
+                    <label for="description" class="text-md leading-6 mt-4">Description</label>
                     <textarea id="description" type="text" name="description" rows="8" class="rounded-md" required autofocus></textarea>
                 </div>
                 <div class="flex flex-col mb-5 w-full mt-4">
-                    <p class="text-sm">Available Stocks</p>
+                    <p class="text-md">Available Stocks</p>
                     <div class="flex">
                         <button type="button" id="minus-btn" class="w-10 border hover:border-neutral-700 transition ease-in-out duration-150 h-8 border-neutral-300">-</button>
                         <input type="number" name="no_of_stocks" id="quantity-input" class="quantity-counter border-neutral-300 focus:border-neutral-700 text-center w-20 h-8" value="1" min="1"/>
@@ -104,13 +109,14 @@
                     </div>
                 </div>
                 <div class="flex flex-col mb-5 w-full">
-                    <p class="text-sm">Price (pesos)</p>
+                    <p class="text-md">Price (pesos)</p>
                     <div class="flex">
                         <button type="button" id="minus-btn2" class="w-10 border hover:border-neutral-700 transition ease-in-out duration-150 h-8 border-neutral-300">-</button>
                         <input type="number" name="price" id="quantity-input2" class="quantity-counter border-neutral-300 focus:border-neutral-700 text-center w-20 h-8" value="1" min="1"/>
                         <button type="button" id="plus-btn2" class="w-10 border hover:border-neutral-700 transition ease-in-out duration-150 h-8 border-neutral-300">+</button>
                     </div>
                 </div>
+                <p class="text-md leading-6 mt-7 mb-2">Upload an Image of the Product <em>(e.g. jpg, jpeg, png, max: 2 MB)</em></p>
                 <div class="flex">
                     <div id="image-preview" class=""></div>
                     <label for="photo" class="flex items-center justify-center size-56 border-2 border-dashed border-gray-400 rounded-md cursor-pointer hover:bg-gray-100 transition-colors duration-300">
@@ -129,113 +135,6 @@
                 </div>
             </form>
         </div>
-
-        {{-- Newsletter --}}
-        <div class="items-center bg-[#E6E6E6] px-64 py-7 grid grid-cols-5">
-            <div class="col-span-2">
-                <h3 class="font-bold text-2xl">Subscribe to our Newsletter</h3>
-                <p class="text-sm">Pellentesque eu nibh eget mauris congue mattis mattis nec tellus. Phasellus imperdiet
-                    elit eu magna.</p>
-            </div>
-            <div class="col-span-3 flex justify-end items-center">
-                <div class="w-full flex justify-end relative">
-                    <input placeholder="Your email address" class="rounded-full border-neutral-300 w-11/12" />
-                    <button
-                        class="absolute text-white bg-[#00B207] px-7 rounded-full text-sm right-0 inset-y-0 flex items-center">Subscribe</button>
-                </div>
-                <div class="flex text-neutral-700">
-                    <a href="#"
-                        class="ml-6 hover:bg-[#00B207] hover:text-white w-8 h-8 flex justify-center items-center rounded-full text-lg transition ease-in-out duration-150"><i
-                            class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#"
-                        class="ml-2 hover:bg-[#00B207] hover:text-white w-8 h-8 flex justify-center items-center rounded-full text-lg transition ease-in-out duration-150"><i
-                            class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#"
-                        class="ml-2 hover:bg-[#00B207] hover:text-white w-8 h-8 flex justify-center items-center rounded-full text-lg transition ease-in-out duration-150"><i
-                            class="fa-brands fa-threads"></i></a>
-                    <a href="#"
-                        class="ml-2 hover:bg-[#00B207] hover:text-white w-8 h-8 flex justify-center items-center rounded-full text-lg transition ease-in-out duration-150"><i
-                            class="fa-brands fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-        <footer class="bg-[#1A1A1A] text-white px-64">
-            <div class="grid grid-cols-7 py-10">
-                <div class="col-span-2">
-                    <h3 class="text-3xl mb-5">AgroShop</h3>
-                    <p class="text-sm mb-5">Morbi cursus porttitor enim lobortis molestie. Duis gravida turpis dui, eget
-                        bibendum magna congue nec.</p>
-
-                    <div class="flex">
-                        <p class="border-b-2 w-auto border-[#20B526] mr-3 py-2 text-sm">(219) 555-0114</p>
-                        <p class="mr-3 py-2">or</p>
-                        <p class="border-b-2 w-auto border-[#20B526] py-2 text-sm">agroshop@gmail.com</p>
-                    </div>
-                </div>
-                <div class="col-span-1"></div>
-                <div class="col-span-1 flex flex-col">
-                    <h4 class="mb-3">My Account</h4>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Profile</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Order
-                        History</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Shopping
-                        Cart</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Your
-                        Shops</a>
-                </div>
-                <div class="col-span-1 flex flex-col">
-                    <h4 class="mb-3">Support</h4>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Contact
-                        Us</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">FAQs</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Terms
-                        & Condition</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Privacy
-                        Policy</a>
-                </div>
-                <div class="col-span-1 flex flex-col">
-                    <h4 class="mb-3">Proxy</h4>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">About</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Shop</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Product</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Track
-                        Order</a>
-                </div>
-                <div class="col-span-1 flex flex-col">
-                    <h4 class="mb-3">Categories</h4>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Farm
-                        Equipments</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Fresh
-                        Produce</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Livestock</a>
-                    <a href="#"
-                        class="text-sm text-neutral-300 hover:text-white leading-7 transition ease-in-out duration-150">Plants
-                        and Seeds</a>
-                </div>
-            </div>
-            <hr class="border-neutral-700">
-            </hr>
-            <div class="py-3 flex justify-between items-center">
-                <p class="text-sm text-neutral-500">Ibañez eCommerce © 2024 All Rights Reserved</p>
-                <img src="{{asset('images/footer-cards.png')}}" />
-            </div>
-        </footer>
-
     </div>
     <script src="{{ asset('js/quantityCounter.js')}}"></script>
     <script>

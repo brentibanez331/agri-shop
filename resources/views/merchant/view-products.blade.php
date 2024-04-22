@@ -71,53 +71,33 @@
                     
                 </div>
             </div>
-            
-            
-            <div class="flex flex-col mx-48">
-                {{-- Call to Action --}}
-                <div class="my-7 h-[500px] grid grid-rows-2 grid-cols-5 gap-4">
-                    <div class="row-span-2 col-span-3 rounded-md overflow-hidden">
-                        <img src="images/Banner Big.png" class="w-full h-full object-cover"/>
-                    </div>
-                    <div class="col-span-2 rounded-md overflow-hidden">
-                        <img src="images/Banner-top-right.png" class="w-full h-full object-cover object-top"/>
-                    </div>
-                    <div class="col-span-2 rounded-md overflow-hidden">
-                        <img src="images/Banner-bot-right.png" class="w-full h-full object-cover object-center"/>
-                    </div>
-                </div>
 
-                {{-- Summary --}}
-                <div class="mb-7 h-24 bg-white shadow-lg rounded-md flex flex-row justify-evenly items-center transition ease-out duration-300 hover:-translate-y-0.5">
-                    <div class="flex flex-row items-center">
-                        <i class="fa-solid fa-truck-fast text-[#00B207] text-2xl mr-5"></i>
+            <div class="px-48 py-10 w-full bg-white">
+                <div class="grid grid-cols-3">
+                    <div class="flex items-center">
+                        <img src="{{ asset('storage/merchants/' . $merchant->image_url) }}" class="mr-7 size-20 rounded-full object-cover border shadow">
                         <div>
-                            <p class="leading-none font-bold">Affordable Shipping</p>
-                            <span class="text-sm">₱10 Minimum</span>
-                        </div>
+                        <p class="text-2xl mb-4 font-semibold"> {{$merchant->store_name}} </p>
+                        <a href="#"
+                                    class="px-10 py-2 text-center border-[#018f07] border bg-[#d1edd3] hover:bg-[#e4ede4] transition ease-in-out duration-150 mr-3 text-[#018f07]">
+                                    Chat Now
+                                </a>
+                            </div>
                     </div>
-                    <div class="flex flex-row items-center">
-                        <i class="fa-solid fa-headset text-[#00B207] text-2xl mr-5"></i>
-                        <div>
-                            <p class="leading-none font-bold">Customer Support</p>
-                            <span class="text-sm">Instant access to support</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-row items-center">
-                        <i class="fa-solid fa-handshake text-[#00B207] text-2xl mr-5"></i>
-                        <div>
-                            <p class="leading-none font-bold">100% Secure Payment</p>
-                            <span class="text-sm">We ensure your money is safe</span>
-                        </div>
+                    <div class="grid grid-rows-3 gap-3">
+                        <p>Products: <span>{{$merchant->no_of_products}}</span></p>
+                        <p>Rating: <span>{{$merchant->merchant_rating}}</span></p>
                     </div>
                 </div>
+                
             </div>
 
             {{-- Product Contents --}}
-            <div class="grid grid-cols-5 mx-48 gap-4 my-7">
+            <div class="bg-[#f5f5f5] py-10">
+            <div class="grid grid-cols-5 mx-48 gap-4 my-7 ">
                 @foreach ($products as $product)
                     <a href="{{ route("product", $product->id) }}">
-                        <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
+                        <div class="border bg-white hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
                             <img src="{{ asset('storage/products/' . $product->product_image_url) }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
                             <div class="p-3">
                                 <p class="text-sm h-10">{{ truncateString($product->product_name) }}</p>
@@ -142,6 +122,7 @@
                     @endforeach --}}
                 @endforeach
             </div>
+        </div>
 
             {{-- Newsletter --}}
             <div class="items-center bg-[#E6E6E6] px-48 py-7 grid grid-cols-5">

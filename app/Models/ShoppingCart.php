@@ -15,6 +15,5 @@ class ShoppingCart extends Model
     protected $fillable = [
         'user_id',
         'total_items',
-        'total_cost'
     ];
 }

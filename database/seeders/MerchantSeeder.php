@@ -16,7 +16,7 @@ class MerchantSeeder extends Seeder
                 // Brent Ibañez
                 'user_id' => 2,
                 'store_name' => 'DEKES',
-                'no_of_products' => 0,
+                'no_of_products' => 1,
                 'merchant_rating' => 0,
                 'image_url' => 'unknown.jpg',
                 'city' => 'Bacolod',
@@ -32,7 +32,7 @@ class MerchantSeeder extends Seeder
                 // John Doe
                 'user_id' => 3,
                 'store_name' => 'aquotool.ph',
-                'no_of_products' => 0,
+                'no_of_products' => 1,
                 'merchant_rating' => 0,
                 'image_url' => 'unknown.jpg',
                 'city' => 'Taguig',

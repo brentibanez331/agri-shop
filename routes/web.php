@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MerchantController;
+use App\Http\Controllers\CartController;
 
 Route::get('/', [LandingPageController::class, 'index'])->name('welcome');
 
@@ -27,8 +28,12 @@ Route::get('/previous', function () {
 })->name('previous');
 
 // Product Operations
-Route::get('/add-product/{merchant}', [ProductController::class, 'addProduct'])->name('add-product')->middleware(['auth', 'verified']);
+Route::get('/add-product/{merchant}', [ProductController::class, 'add'])->name('add-product')->middleware(['auth', 'verified']);
 Route::post('/store-product', [ProductController::class, 'storeProduct'])->name('store-product');
+Route::get('/edit-product/{productId}/{merchantId}', [ProductController::class, 'edit'])->name('edit-product')->middleware(['auth', 'verified']);
+Route::put('/update-product/{product}', [ProductController::class, 'update'])->name('update-product');
+Route::get('/delete-product/{productId}/{merchantId}', [ProductController::class, 'delete'])->name('delete-product');
+Route::get('/product/{product}', [ProductController::class, 'show'])->name('product');
 
 // Shop Operations
 Route::get('/manage-shop/{merchant}', [MerchantController::class, 'getProducts'])->name('manage-shop')->middleware(['auth', 'verified']);
@@ -37,7 +42,13 @@ Route::get('/add-shop', function () {
 })->middleware(['auth', 'verified'])->name('add-shop');
 Route::get('/edit-shop/{merchant}', [MerchantController::class, 'edit'])->name('edit-shop')->middleware(['auth', 'verified']);
 Route::post('/store-shop', [MerchantController::class, 'store'])->name('store-shop');
-Route::put('/update-shop', [MerchantController::class, 'update'])->name('update-shop');
+Route::put('/update-shop/{merchant}', [MerchantController::class, 'update'])->name('update-shop');
+Route::get('/delete-shop/{merchant}', [MerchantController::class, 'delete'])->name('delete-shop');
+Route::get('/view-shop/{merchant}', [MerchantController::class, 'show'])->name('view-shop');
+
+// Cart Operations
+Route::get('/cart', [CartController::class, 'show'])->name('manage-cart')->middleware(['auth', 'verified']);
+Route::post('/store-cart/{product}', [CartController::class, 'store'])->name('store-cart');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -48,6 +59,6 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 route::get('admin/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'admin']);
-Route::get('/product/{product}', [ProductController::class, 'show'])->name('product');
+
 // Route::get('/userdelete/{id}', [UserController::class, 'delete'])->name('admin.deleteuser');
 

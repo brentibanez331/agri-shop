@@ -17,10 +17,24 @@
         <div class="relative flex flex-col items-center">
             <div class="relative w-full">
                 <header class="bg-gradient-to-b from-[#259B00] from-90% to-[#2FB605]">
-                    <div class="mx-64">
+                    <div class="mx-48">
                         @if (Route::has('login'))
                         <nav class="-mx-3 flex flex-1 justify-end">
                             @auth
+                            <a
+                                        href="{{ route('welcome') }}"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                    >
+                                        Home
+                                    </a>
+                                    <div class="border-l my-1.5 opacity-50"></div>
+                            <a
+                                        href="{{ route('your-shop') }}"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                    >
+                                        My Stores
+                                    </a>
+                                    <div class="border-l my-1.5 opacity-50"></div>
                             <a href="{{ url('/dashboard') }}"
                                 class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white">
                                 Dashboard
@@ -43,7 +57,7 @@
                         @endif
                     </div>
                 </header>
-                <div class="my-5 mx-64 flex justify-between items-center">
+                <div class="my-5 mx-48 flex justify-between items-center">
                     <p class="text-xl font-bold">AgroShop</p>
                     <div class="relative w-7/12 flex justify-center">
                         <input type="text" placeholder="Search for Products"
@@ -61,12 +75,17 @@
             </div>
         </div>
 
-        <div class="mx-64 my-5 flex justify-end"><a href="{{route('add-shop')}}" class="bg-[#259B00] px-4 py-1 rounded-full hover:opacity-70 transition ease-in-out text-white">+ Create E-Shop</a></div>
+        <div class="mx-48 my-5 flex justify-end"><a href="{{route('add-shop')}}" class="bg-[#259B00] px-4 py-1 rounded-full hover:opacity-70 transition ease-in-out text-white">+ Create E-Shop</a></div>
         {{-- Shops --}}
-        <div class="mx-64 my-7 grid grid-cols-3 gap-10">
+        <div class="mx-48 my-7 grid grid-cols-3 gap-10">
             @foreach ($shops as $shop)
             <div class="border flex flex-col justify-center items-center py-7 rounded-md bg-white shadow hover:-translate-y-0.5 transition ease-in-out duration-150">
-                <img src="{{ asset('storage/merchants/' . $shop->image_url) }}" class="rounded-full w-40 shadow" />
+                @if($shop->image_url == null)
+                    <img src="{{ asset('storage/merchants/unknown.jpg') }}" class="rounded-full size-40 object-cover shadow" />
+                @else
+                    <img src="{{ asset('storage/merchants/' . $shop->image_url) }}" class="rounded-full size-40 object-cover shadow" />
+                @endif
+                
                 <div class="flex flex-col items-center pt-5">
                     <h2 class="font-semibold text-2xl">{{ $shop->store_name }}</h2>
                     <p>{{ $shop->merchant_rating }}</p>
@@ -89,7 +108,7 @@
         </div>
 
         {{-- Newsletter --}}
-        <div class="items-center bg-[#E6E6E6] px-64 py-7 grid grid-cols-5">
+        <div class="items-center bg-[#E6E6E6] px-48 py-7 grid grid-cols-5">
             <div class="col-span-2">
                 <h3 class="font-bold text-2xl">Subscribe to our Newsletter</h3>
                 <p class="text-sm">Pellentesque eu nibh eget mauris congue mattis mattis nec tellus. Phasellus imperdiet
@@ -117,7 +136,7 @@
                 </div>
             </div>
         </div>
-        <footer class="bg-[#1A1A1A] text-white px-64">
+        <footer class="bg-[#1A1A1A] text-white px-48">
             <div class="grid grid-cols-7 py-10">
                 <div class="col-span-2">
                     <h3 class="text-3xl mb-5">AgroShop</h3>
