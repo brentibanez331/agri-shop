@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('store_name');
             $table->integer('no_of_products');
-            $table->decimal('merchant_rating');
+            $table->decimal('merchant_rating', 8, 1);
             $table->text('image_url')->nullable()->default('unknown.jpg');
             $table->string('city');
             $table->string('country');

@@ -15,12 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
+            $table->unsignedBigInteger('merchant_id')->nullable();
             $table->integer('rating');
             $table->text('review_text');
             $table->rememberToken();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('merchant_id')->references('id')->on('merchants')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
@@ -32,6 +34,7 @@ return new class extends Migration
     {
         Schema::table('ratings', function (Blueprint $table) {
             $table->dropForeign('ratings_user_id_foreign');
+            $table->dropForeign('ratings_merchant_id_foreign');
             $table->dropForeign('ratings_product_id_foreign');
         });
 

@@ -16,10 +16,10 @@ return new class extends Migration
             $table->string('order_ref');
             $table->integer('quantity');
             $table->float('total_amount');
-            $table->timestamp('date');
-            $table->string('status');
-            $table->string('payment_method');
-            $table->rememberToken();
+            $table->float('selling_price');
+            $table->string('status')->default("Pending");
+            $table->string('shipping_option');
+            $table->string('est_arrival');
             $table->timestamps();
 
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
