@@ -75,11 +75,21 @@
     </div>
 
     <div class="flex justify-center w-full my-20">
-        <form method="POST" action="{{ route('update-profile')}}" class="w-5/12 shadow-md px-7 py-7">
-            @csrf
+        <form method="POST" action="{{ route('update-profile')}}" class="w-5/12 shadow-md px-7 py-7" enctype="multipart/form-data">
+            @method('PUT')
+            @csrf <!-- {{ csrf_field() }} -->
             <h2 class="text-3xl font-bold text-center">Profile Information</h2>
             {{-- <input name="photo" type="file" id="photo" class="mt-10"/> --}}
             <div class="grid grid-cols-2 gap-4 mt-10">
+                <div class="col-span-2 justify-center flex">
+                    <label for="photo" class="relative flex items-center justify-center size-56 border-2 border-gray-400 rounded-full cursor-pointer hover:bg-gray-100 transition-colors duration-300">
+                      <div id="image-preview" class="absolute inset-0 flex items-center justify-center rounded-full overflow-hidden"></div>
+                      <div class="flex flex-col items-center text-gray-600">
+                        <span class="text-md px-3 text-center">Click Here to Upload a Profile Picture</span>
+                      </div>
+                      <input name="photo" type="file" id="photo" class="hidden" onchange="previewImage(event)"/>
+                    </label>
+                  </div>
                 <div class="col-span-2 flex flex-col w-full">
                     <label for="username" class="text-sm leading-6">Username</label>
                     <input id="username" type="text" name="username" class="rounded-md" autofocus />
@@ -183,6 +193,26 @@
             <img src="images/footer-cards.png"/>
         </div>
     </footer>
+    <script>
+        function previewImage(event) {
+        const imagePreview = document.getElementById('image-preview');
+        imagePreview.innerHTML = '';
+
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function () {
+            const img = document.createElement('img');
+            img.src = reader.result;
+            img.classList.add('w-full', 'h-full', 'object-cover');
+            imagePreview.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.innerHTML = '';
+        }
+        }
+    </script>
     <script src="js/passwordToggle.js"></script>
 </body>
 </html>
