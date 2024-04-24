@@ -30,4 +30,9 @@ class Merchants extends Model
     {
         return $this->hasMany(Products::class, 'merchant_id');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transactions::class, 'merchant_id');
+    }
 }

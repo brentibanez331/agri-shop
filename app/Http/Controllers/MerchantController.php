@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Merchants;
+use App\Models\Transactions;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use App\Models\Ratings;
+use App\Models\ShoppingCart;
 
 class MerchantController extends Controller
 {
@@ -22,10 +25,14 @@ class MerchantController extends Controller
             return $product;
         });
 
-        // Needs some fixing
-        $no_of_ratings = Ratings::where('user_id', $merchant->id)->count();
+        $no_of_ratings = Ratings::where('merchant_id', $merchant->id)->count();
 
-        return view('merchant.view-products', compact('products', 'merchant'));
+        if(Auth::user()){
+            $shopcart = ShoppingCart::where('user_id', Auth::user()->id)->first();
+            return view('merchant.view-products', compact('products', 'merchant', 'no_of_ratings', 'shopcart'));
+        }
+
+        return view('merchant.view-products', compact('products', 'merchant', 'no_of_ratings'));
     }
 
     public function delete(Merchants $merchant){
@@ -133,7 +140,13 @@ class MerchantController extends Controller
     public function getUserShops()
     {
         $user_id = Auth::user()->id;
-        $shops = Merchants::where('user_id', $user_id)->get();
+        $shops = Merchants::where('user_id', $user_id)
+                ->withCount([
+                    'transactions as pending_transactions_count' => function ($query){
+                        $query->where('status', 'Pending');
+                    }
+                ])
+                ->get();
 
         return view('merchant.index', compact('shops'));
     }
@@ -145,6 +158,18 @@ class MerchantController extends Controller
             return $product;
         });
 
-        return view('merchant.shop-products', compact('products', 'merchant'));
+        $no_of_ratings = Ratings::where('merchant_id', $merchant->id)->count();
+
+        return view('merchant.shop-products', compact('products', 'merchant', 'no_of_ratings'));
+    }
+
+    public function getOrders(Merchants $merchant){
+        $transactions = Transactions::where('merchant_id', $merchant->id)->orderBy('created_at', 'desc')->get()->map(function ($transactions){
+            $transactions->created_at = $transactions->created_at->setTimezone('Asia/Manila');
+            return $transactions;
+        });;
+        // $pendingTransactions = $transactions->where('status', 'Pending');
+
+        return view('merchant.shop-orders', compact('merchant', 'transactions'));
     }
 }

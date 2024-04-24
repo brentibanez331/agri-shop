@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/7fd7203ef6.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="bg-[#f5f5f5]">
@@ -21,9 +23,35 @@
                         @if (Route::has('login'))
                         <nav class="-mx-3 flex flex-1 justify-end">
                             @auth
-                            <a href="{{ url('/dashboard') }}"
-                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white">
-                                Dashboard
+                            <a
+                                href="{{ route('welcome') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                Home
+                            </a>
+                            <div class="border-l my-1.5 opacity-50"></div>
+                            <a
+                                href="{{ route('your-shop') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                My Stores
+                            </a>
+                            <div class="border-l my-1.5 opacity-50"></div>
+                            <a
+                                href="{{ route('show-transact') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                Purchases
+                            </a>
+                            <div class="border-l my-1.5 opacity-50"></div>
+                            <a
+                                href="{{ url('/dashboard') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                <div class="flex items-center">
+                                    <img src="{{ asset('storage/users/' . Auth::user()->image_url)}}" class="size-5 rounded-full mr-1.5">
+                                    <p>{{Auth::user()->username}}</p>
+                                </div>
                             </a>
                             @else
                             @if (Route::has('register'))
@@ -67,16 +95,16 @@
         <div class="mx-64 my-7">
             <div class="grid grid-cols-[repeat(15,_minmax(0,_1fr))] bg-white shadow rounded-md p-3">
                 <p class="col-span-1"></p>
-                <p class="col-span-6">Select All</p>
+                <p class="col-span-6">Product</p>
                 <p class="col-span-2 text-center">Unit Price</p>
                 <p class="col-span-2 text-center">Quantity</p>
                 <p class="col-span-2 text-center">Total Price</p>
                 <p class="col-span-2 text-center">Actions</p>
             </div>
 
-            @foreach($cart_items as $item)
+            @forelse($cart_items as $item)
                 <div class="mt-6 bg-white shadow rounded-md">
-                    <div class="px-20 py-3"><a href="{{route('view-shop', $item->product->merchant->id)}}">{{$item->product->merchant->store_name}}</a> </div>
+                    <div class="px-20 py-3"><i class="fa-solid fa-shop mr-3 text-neutral-600"></i><a href="{{route('view-shop', $item->product->merchant->id)}}">{{$item->product->merchant->store_name}}</a> </div>
                     <div class="border-b"></div>
                     <div class="grid grid-cols-[repeat(15,_minmax(0,_1fr))] px-3 py-10 items-center">
                         <p class="col-span-1"></p>
@@ -86,17 +114,32 @@
                         </a>
                         <p class="col-span-2 text-center text-sm"> ₱{{$item->product->price}} </p>
                         <div class="col-span-2 text-center">
-                            <p> {{$item->quantity}} </p>
+                            <div class="flex items-center justify-center">
+                                <a href="#"
+                                    class="border hover:border-neutral-700 transition ease-in-out duration-150 px-2 border-neutral-300 minus-cart" data-cart-id="{{ $item->cart_id }}" data-product-id="{{ $item->id }}">-</a>
+                                <p class="border px-4"> {{$item->quantity}} </p>
+                                <a href="#"
+                                    class="border hover:border-neutral-700 transition ease-in-out duration-150 px-2 border-neutral-300 plus-cart" data-cart-id="{{ $item->cart_id }}" data-product-id="{{ $item->id }}">+</a>
+                            </div>
+                            
                             <p class="text-sm text-[#018f07]"> {{$item->product->no_of_stocks}} items left </p>
                         </div>
                         @php
                             $total_price = $item->price * $item->quantity;
                         @endphp
-                        <p class="col-span-2 text-center text-sm text-[#018f07]"> ₱{{ $total_price }} </p>
-                        <a class="col-span-2 text-center text-sm text-red-500" href="#">Delete</a>
+                        <p class="col-span-2 text-center text-sm text-[#018f07] price"> {{ $total_price }} </p>
+                        <div class="col-span-2 text-center text-sm flex flex-col items-center gap-y-2">
+                            <a class="text-blue-500 py-1 border-blue-500 border w-10/12 hover:bg-blue-500 hover:text-white transition ease-in-out" href="{{ route('cart-transact', $item->id) }}">Buy</a>
+                            <a class="text-red-500 border-red-500 border py-1 hover:bg-red-500 hover:text-white transition ease-in-out w-10/12" href="{{route('delete-cart', $item->id)}}">Delete</a>
+                        </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="my-20 text-center">
+                    <h2 class="text-3xl">It's a bit lonely here😓</h2>
+                    <p>Start adding items to your Cart!</p>
+                </div>
+            @endforelse
         </div>
     </div>
 
@@ -207,7 +250,7 @@
     </footer>
 
     </div>
-    <script src="{{ asset('js/quantityCounter.js')}}"></script>
+    <script src="{{ asset('js/cart.js')}}"></script>
     <script>
         function previewImage(event) {
             const imagePreview = document.getElementById('image-preview');
