@@ -9,6 +9,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MerchantController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\RatingController;
 
 Route::get('/', [LandingPageController::class, 'index'])->name('welcome');
 
@@ -17,12 +19,16 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+// User Operations
 Route::get('continue-profile', function () {
     return view('auth/continue-profile');
 })->middleware(['auth', 'verified'])->name('continue-profile');
 
 Route::get('/your-shop', [MerchantController::class, 'getUserShops'])->name('your-shop')->middleware(['auth', 'verified']);
-Route::post('update-profile', [UserController::class, 'update'])->name('update-profile')->middleware(['auth', 'verified']);
+Route::put('/update-profile', [UserController::class, 'update'])->name('update-profile')->middleware(['auth', 'verified']);
+Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile')->middleware(['auth', 'verified']);
+Route::put('/update-account', [UserController::class, 'account'])->name('update-account')->middleware(['auth', 'verified']);
+Route::get('/delete-profile', [UserController::class, 'delete'])->name('delete-user')->middleware(['auth', 'verified']);
 Route::get('/previous', function () {
     return redirect()->back();
 })->name('previous');
@@ -37,6 +43,7 @@ Route::get('/product/{product}', [ProductController::class, 'show'])->name('prod
 
 // Shop Operations
 Route::get('/manage-shop/{merchant}', [MerchantController::class, 'getProducts'])->name('manage-shop')->middleware(['auth', 'verified']);
+Route::get('/manage-orders/{merchant}', [MerchantController::class, 'getOrders'])->name('manage-orders')->middleware(['auth', 'verified']);
 Route::get('/add-shop', function () {
     return view('merchant.add');
 })->middleware(['auth', 'verified'])->name('add-shop');
@@ -46,9 +53,30 @@ Route::put('/update-shop/{merchant}', [MerchantController::class, 'update'])->na
 Route::get('/delete-shop/{merchant}', [MerchantController::class, 'delete'])->name('delete-shop');
 Route::get('/view-shop/{merchant}', [MerchantController::class, 'show'])->name('view-shop');
 
+
 // Cart Operations
 Route::get('/cart', [CartController::class, 'show'])->name('manage-cart')->middleware(['auth', 'verified']);
-Route::post('/store-cart/{product}', [CartController::class, 'store'])->name('store-cart');
+Route::post('/store-cart/{product}', [CartController::class, 'handler'])->name('store-cart');
+Route::post('/minus-cart/{itemId}/{cartId}', [CartController::class, 'minus'])->name('minus-cart');
+Route::post('/plus-cart/{itemId}/{cartId}', [CartController::class, 'plus'])->name('plus-cart');
+Route::get('/delete-cart/{item}', [CartController::class, 'delete'])->name('delete-cart');
+
+// Transaction Operations
+Route::get('/transact', [CartController::class, 'handler'])->name('transact')->middleware(['auth', 'verified']);
+Route::get('/cart-transact/{item}', [TransactionController::class, 'transact'])->name('cart-transact')->middleware(['auth', 'verified']);
+Route::post('/store-transact/{product}', [TransactionController::class, 'store'])->name('store-transact')->middleware(['auth', 'verified']);
+Route::get('/transact/all', [TransactionController::class, 'show'])->name('show-transact')->middleware(['auth', 'verified']);
+Route::get('/confirm-order/{trans}', [TransactionController::class, 'confirm'])->name('confirm-order');
+Route::get('/cancel-order/{trans}', [TransactionController::class, 'cancel'])->name('cancel-order');
+Route::get('/delete-trans/{trans}', [TransactionController::class, 'delete'])->name('delete-trans');
+
+// Rating Operations
+Route::get('/rate/{trans}', [RatingController::class, 'index'])->name('rate');
+Route::post('/store-review/{product}', [RatingController::class, 'store'])->name('store-review')->middleware(['auth', 'verified']);
+Route::get('/edit-review/{product}', [RatingController::class, 'edit'])->name('edit-review')->middleware(['auth', 'verified']);
+Route::put('/update-review/{rating}', [RatingController::class, 'update'])->name('update-review');
+Route::get('/delete-review/{rating}', [RatingController::class, 'delete'])->name('delete-review');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -21,9 +21,35 @@
                         @if (Route::has('login'))
                         <nav class="-mx-3 flex flex-1 justify-end">
                             @auth
-                            <a href="{{ url('/dashboard') }}"
-                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white">
-                                Dashboard
+                            <a
+                                        href="{{ route('welcome') }}"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                    >
+                                        Home
+                                    </a>
+                                    <div class="border-l my-1.5 opacity-50"></div>
+                                    <a
+                                        href="{{ route('your-shop') }}"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                    >
+                                        My Stores
+                                    </a>
+                                    <div class="border-l my-1.5 opacity-50"></div>
+                                    <a
+                                        href="{{ route('show-transact') }}"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                    >
+                                        Purchases
+                                    </a>
+                                    <div class="border-l my-1.5 opacity-50"></div>
+                                    <a
+                                href="{{ url('/dashboard') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                <div class="flex items-center">
+                                    <img src="{{ asset('storage/users/' . Auth::user()->image_url)}}" class="size-5 rounded-full mr-1.5">
+                                    <p>{{Auth::user()->username}}</p>
+                                </div>
                             </a>
                             @else
                             @if (Route::has('register'))
@@ -44,9 +70,11 @@
                     </div>
                 </header>
                 <div class="my-5 mx-64 flex justify-between items-center">
-                    <p class="text-xl font-bold">AgroShop</p>
-                    
-                    <a href="#"><i class="fa-solid fa-cart-shopping text-2xl"></i></a>
+                    <div class="flex">
+                        <p class="text-xl font-bold">AgroShop</p>
+                        <div class="border-l-2 border-neutral-600 mx-5"></div>
+                        <h1 class="text-xl font-bold">Product Management</h1>
+                    </div>
                 </div>
                 <hr>
                 </hr>
@@ -56,9 +84,9 @@
         <div class="mx-64 mt-6 px-7 py-5 flex items-center bg-white rounded-md shadow">
             <div class="flex items-center">
                 @if($merchant->image_url == null)
-                    <img src="{{ asset('storage/merchants/unknown.jpg')}}" class="w-10 rounded-full border mr-3"/>
+                    <img src="{{ asset('storage/merchants/unknown.jpg')}}" class="size-10 object-cover rounded-full border mr-3"/>
                 @else
-                    <img src="{{ asset('storage/merchants/' . $merchant->image_url)}}" class="w-10 rounded-full border mr-3"/>
+                    <img src="{{ asset('storage/merchants/' . $merchant->image_url)}}" class="size-10 object-cover rounded-full border mr-3"/>
                 @endif
                 
                 <h1 class="text-xl"> {{$merchant->store_name}}</h1>
@@ -115,11 +143,19 @@
                 <input type="hidden" name="merchant_id" value="{{$merchant->id}}">
                 <div class="flex flex-col">
                     <label for="product_name" class="text-md leading-6 mt-7">Product Name</label>
-                    <input id="product_name" type="text" name="product_name" class="rounded-md" value="{{$product->product_name}}" required autofocus/>
+                    <input id="product_name" type="text" name="product_name" class="rounded-md" value="{{$product->product_name}}" autofocus/>
                 </div>
                 <div class="flex flex-col">
                     <label for="description" class="text-md leading-6 mt-4">Description</label>
-                    <textarea id="description" type="text" name="description" rows="8" class="rounded-md" required autofocus>{{ $product->description }}</textarea>
+                    <textarea id="description" type="text" name="description" rows="8" class="rounded-md" autofocus>{{ $product->description }}</textarea>
+                </div>
+                <div class="flex flex-col mb-5 w-1/4 mt-7">
+                    <p class="text-md">Category</p>
+                    <select id="tag_id" name="tag_id" autofocus class="shipping-option rounded-md focus:ring-transparent">
+                        @foreach ($tags as $tag)
+                            <option value="{{$tag->id}}" @if($tag->id == $product->tag_id) selected @endif>{{$tag->tag_name}}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="flex flex-col mb-5 w-full mt-4">
                     <p class="text-md">Available Stocks</p>

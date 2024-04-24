@@ -10,19 +10,26 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Log;
 use App\Models\Products;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Merchants;
 use App\Models\Ratings;
+use App\Models\ShoppingCart;
+use App\Models\Tag;
 
 class ProductController extends Controller
 {
     public function edit($productId, $merchantId){
         $product = Products::findOrFail($productId);
         $merchant = Merchants::findOrFail($merchantId);
-        return view('product.edit', compact('product', 'merchant'));
+        $tags = Tag::all();
+
+        return view('product.edit', compact('product', 'merchant', 'tags'));
     }
 
     public function add(Merchants $merchant){
-        return view('product.add', compact('merchant'));
+        $tags = Tag::all();
+
+        return view('product.add', compact('merchant', 'tags'));
     }
 
     public function delete($productId, $merchantId){
@@ -88,11 +95,12 @@ class ProductController extends Controller
 
         $validatedData = $request->validate([
             'merchant_id' => 'required|exists:merchants,id',
+            'tag_id' => 'required|exists:tags,id',
             'product_name' => 'required|max:255',
             'description' => 'required',
             'no_of_stocks' => 'required|integer|min:1',
             'price' => 'required|numeric|min:0',
-            'photo' => 'required|mimes:jpg,png,jpeg|max:2048', // Adjust the max size as needed
+            'photo' => 'required|max:2048', // Adjust the max size as needed
         ]);
 
         try {
@@ -107,6 +115,7 @@ class ProductController extends Controller
             $product = new Products;
             $product->merchant_id = $validatedData['merchant_id'];
             $product->product_name = $validatedData['product_name'];
+            $product->tag_id = $validatedData['tag_id'];
             $product->description = $validatedData['description'];
             $product->no_of_stocks = $validatedData['no_of_stocks'];
             $product->product_rating = 0.0;
@@ -143,8 +152,18 @@ class ProductController extends Controller
                 ->keyBy('rating');
 
             $no_of_ratings = Ratings::where('product_id', $product->id)->count();
-            $reviews = Ratings::where('product_id', $product->id)->get();
+            $reviews = Ratings::where('product_id', $product->id)->get()->map(function ($review){
+                $review->created_at = $review->created_at->setTimezone('Asia/Manila');
+                return $review;
+            });
+
+            if(Auth::user()){
+                $shopcart = ShoppingCart::where('user_id', Auth::user()->id)->first();
+                return view('product.index', compact('product', 'no_of_ratings', 'ratings', 'reviews', 'shopcart'));
+            }
+            
             return view('product.index', compact('product', 'no_of_ratings', 'ratings', 'reviews'));
+            
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Handle the exception, for example, return a response or log it
             return response()->json(['error' => 'No Found Record'], 404);

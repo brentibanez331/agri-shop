@@ -34,4 +34,9 @@ class Products extends Model
     {
         return $this->belongsTo(Merchants::class, 'merchant_id', 'id');
     }
+
+    public function tag(): BelongsTo
+    {
+        return $this->belongsTo(Tag::class, 'tag_id', 'id');
+    }
 }

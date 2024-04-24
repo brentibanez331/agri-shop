@@ -21,19 +21,35 @@
                         @if (Route::has('login'))
                         <nav class="-mx-3 flex flex-1 justify-end">
                             @auth
-                            <a href="{{ route('welcome') }}"
-                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white">
+                            <a
+                                href="{{ route('welcome') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
                                 Home
                             </a>
                             <div class="border-l my-1.5 opacity-50"></div>
-                            <a href="{{ route('your-shop') }}"
-                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white">
+                            <a
+                                href="{{ route('your-shop') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
                                 My Stores
                             </a>
                             <div class="border-l my-1.5 opacity-50"></div>
-                            <a href="{{ url('/dashboard') }}"
-                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white">
-                                Dashboard
+                            <a
+                                href="{{ route('show-transact') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                Purchases
+                            </a>
+                            <div class="border-l my-1.5 opacity-50"></div>
+                            <a
+                                href="{{ url('/dashboard') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                <div class="flex items-center">
+                                    <img src="{{ asset('storage/users/' . Auth::user()->image_url)}}" class="size-5 rounded-full mr-1.5">
+                                    <p>{{Auth::user()->username}}</p>
+                                </div>
                             </a>
                             @else
                             @if (Route::has('register'))
@@ -46,8 +62,6 @@
                                 class="rounded-md text-sm px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white">
                                 Login
                             </a>
-
-
                             @endauth
                         </nav>
                         @endif
@@ -64,7 +78,12 @@
                             </button>
                         </div>
                     </div>
-                    <a href="#"><i class="fa-solid fa-cart-shopping text-2xl"></i></a>
+                    <div class="relative">
+                        <a href="{{route('manage-cart')}}"><i class="fa-solid fa-cart-shopping text-2xl"></i></a>
+                        @if(Auth::user())
+                        <p class="absolute -top-2 -right-2 bg-[#259B00] text-white text-sm leading-none size-4 text-center rounded-full">{{$shopcart->total_items}}</p>
+                        @endif
+                    </div>
                 </div>
                 <hr>
                 </hr>
@@ -103,22 +122,22 @@
                         <div class="flex mb-5 w-full">
                             <p class="w-1/6 text-neutral-500">Shipping</p>
                             <div class="flex flex-col w-6/12">
-                                <div class="flex">
-                                    <p class="text-neutral-500 w-6/12">Shipping to</p>
+                                <div class="flex mb-2">
+                                    <p class="text-neutral-500 w-4/12">To</p>
 
                                     @auth
                                     {{-- Display Shipping --}}
-                                    <p>User Details Here</p>
+                                    <p class="w-1/2">{{Auth::user()->address}}</p>
                                     @else
                                     <a class="underline hover:text-neutral-500 transition ease-in-out duration-150"
                                         href="{{route('login')}}">Login to View</a>
                                     @endauth
                                 </div>
                                 <div class="flex">
-                                    <p class="text-neutral-500 w-6/12">Shipping fee</p>
+                                    <p class="text-neutral-500 w-4/12">From</p>
                                     @auth
                                     {{-- Display Shipping --}}
-                                    <p>Shipping Fee Here</p>
+                                    <p> {{$product->merchant->city}}, {{$product->merchant->country}} </p>
                                     @else
 
                                     @endauth
@@ -128,13 +147,21 @@
 
                         </div>
                         <div class="flex mb-5 w-full">
-                            <p class="w-1/6 text-neutral-500">Options</p>
-                            <p>Insert Options Here (Optional)</p>
+                            <p class="w-1/6 text-neutral-500">Category</p>
+                            <p> {{$product->tag->tag_name}} </p>
                         </div>
                         <div class="flex mb-5 w-full items-center">
                             <p class="w-1/6 text-neutral-500">Quantity</p>
-
-                            <div class="flex items-center mr-5">
+                            @auth
+                                @if($product->merchant->user_id != Auth::user()->id)
+                                <div class="flex items-center mr-5">
+                                @else
+                                <div class="flex items-center mr-5 hidden">
+                                @endif
+                            @else
+                                <div class="flex items-center mr-5">
+                            @endauth
+                            
                                 <button id="minus-btn" type="button"
                                     class="w-10 border hover:border-neutral-700 transition ease-in-out duration-150 h-8 border-neutral-300">-</button>
                                 <input type="number" name="quantity" id="quantity-input"
@@ -239,7 +266,7 @@
                                 class="w-24 px-1.5 py-1 text-sm text-center border-[#018f07] border bg-[#d1edd3] hover:bg-[#e4ede4] transition ease-in-out duration-150 mr-3 text-[#018f07]">
                                 Chat Now
                             </a>
-                            <a href="#"
+                            <a href="{{route('view-shop', $product->merchant->id)}}"
                                 class="w-24 px-1.5 py-1 text-sm text-center border-[#259B00] bg-white hover:text-white hover:bg-[#2FB605] transition ease-in-out duration-150 text-black border">
                                 View Shop
                             </a>
@@ -300,9 +327,29 @@
             @endphp
             <div class="border-b py-7 flex">
                 <img class="w-10 h-10 object-cover rounded-full mr-5"
-                    src=" {{asset('users/' . $review->user->image_url)}} " />
-                <div>
-                    <p>{{$review->user->username}}</p>
+                    src=" {{asset('storage/users/' . $review->user->image_url)}} " />
+                <div class="w-full">
+                    @auth
+                        @if($review->user->id == Auth::user()->id)
+                            <div class="flex justify-between items-center w-full">
+                                <div>
+                                    <p>You</p>
+                                    <p class="text-sm text-neutral-600">{{$review->created_at->translatedFormat('m/d/Y, h:i A')}}</p>
+                                </div>
+                                <div>
+                                    <a href="{{route('edit-review', $product->id)}}"><i class="transition ease-in-out fa-solid fa-pen-to-square text-xl mr-5 hover:opacity-80" style="color:rgb(87, 87, 87)"></i></a>
+                                    <a href="{{route('delete-review', $review->id)}}"><i class="fa-solid fa-trash pr-5 text-xl hover:opacity-80 transition ease-in-out" style="color:rgb(87, 87, 87)"></i></a>
+                                </div>
+                                
+                            </div>
+                            
+                        @else
+                            <p>{{$review->user->username}}</p>
+                        @endif
+                    @else
+                        <p>{{$review->user->username}}</p>
+                    @endauth
+                    
                     @for($i = 0; $i < $review->rating; $i++)
                         <i class="fa-solid fa-star text-xs" style="color: #FFD43B"></i>
                         @endfor

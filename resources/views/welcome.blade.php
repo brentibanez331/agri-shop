@@ -21,6 +21,13 @@
                             <nav class="-mx-3 flex flex-1 justify-end">
                                 @auth
                                     <a
+                                        href="{{ route('welcome') }}"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                    >
+                                        Home
+                                    </a>
+                                    <div class="border-l my-1.5 opacity-50"></div>
+                                    <a
                                         href="{{ route('your-shop') }}"
                                         class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                                     >
@@ -28,11 +35,21 @@
                                     </a>
                                     <div class="border-l my-1.5 opacity-50"></div>
                                     <a
-                                        href="{{ url('/dashboard') }}"
+                                        href="{{ route('show-transact') }}"
                                         class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                                     >
-                                        Dashboard
+                                        Purchases
                                     </a>
+                                    <div class="border-l my-1.5 opacity-50"></div>
+                                    <a
+                                href="{{ route('edit-profile') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                <div class="flex items-center">
+                                    <img src="{{ asset('storage/users/' . Auth::user()->image_url)}}" class="size-5 rounded-full mr-1.5">
+                                    <p>{{Auth::user()->username}}</p>
+                                </div>
+                            </a>
                                 @else
                                 @if (Route::has('register'))
                                         <a
@@ -65,7 +82,12 @@
                                 </button>
                             </div>
                         </div>
-                        <a href="{{route('manage-cart')}}"><i class="fa-solid fa-cart-shopping text-2xl"></i></a>
+                        <div class="relative">
+                            <a href="{{route('manage-cart')}}"><i class="fa-solid fa-cart-shopping text-2xl"></i></a>
+                            @if(Auth::user())
+                                <p class="absolute -top-2 -right-2 bg-[#259B00] text-white text-sm leading-none size-4 text-center rounded-full">{{$shopcart->total_items}}</p>
+                            @endif
+                        </div>
                     </div>
                     <hr></hr>
                     
@@ -114,21 +136,19 @@
             </div>
 
             {{-- Product Contents --}}
-            <div class="grid grid-cols-5 mx-48 gap-4 my-7">
+            <div class="grid grid-cols-6 mx-48 gap-4 my-7">
                 @foreach ($products as $product)
                     <a href="{{ route("product", $product->id) }}">
                         <div class="border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
-                            <img src="{{ asset('storage/products/' . $product->product_image_url) }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
+                            <img src="{{ asset('storage/products/' . $product->product_image_url) }}" alt="{{ $product->product_name }}" class="h-44 w-full object-cover">
                             <div class="p-3">
                                 <p class="text-sm h-10">{{ truncateString($product->product_name) }}</p>
                                 <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
                                 <div class="flex flex-row items-center">
-                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                    <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>
+                                    <div class="star-outer relative mr-1.5">
+                                        <div class="star-inner-{{$product->id}} absolute h-full top-0 overflow-hidden" style=""></div>
+                                    </div>
+                                    <p class="text-sm ml-1">{{$product->items_sold}} Sold</p>
                                 </div>
                                 <div class="flex items-center mt-1.5">
                                     <i class="fa-solid fa-location-dot mr-1.5" style="color: #797979;"></i>
@@ -137,9 +157,20 @@
                             </div>
                         </div>
                     </a>
-                    {{-- @foreach ($product->productImages as $image)
-                        <img src="{{ 'products/' . $image->image_path }}" alt="{{ $product->product_name }}">
-                    @endforeach --}}
+                    <style>
+                        .star-inner-{{$product->id}}::before{
+                            content: "\2605 \2605 \2605 \2605 \2605";
+                            color: #FFD43B;
+                        }
+                    </style>
+                    <script>
+                        function setStarRating(avgRating, starInnerElement) {
+                            const width = (avgRating / 5) * 100 + "%";
+                            starInnerElement.style.width = width;
+                        }
+                        
+                        setStarRating({{ $product->product_rating }}, document.querySelector('.star-inner-{{$product->id}}'));
+                    </script>
                 @endforeach
             </div>
 

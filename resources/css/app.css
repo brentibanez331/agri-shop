@@ -5,6 +5,7 @@
 .toggle-password {
     @apply focus:outline-none;
 }
+
 .quantity-counter::-webkit-outer-spin-button,
 .quantity-counter::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -16,24 +17,103 @@
     -moz-appearance: textfield;
 }
 
-.rating-progress .progress{
+.rating-progress .progress {
     flex: 1 1 0;
 }
 
-.star-outer::before{
+.star-outer::before {
     content: "\2605 \2605 \2605 \2605 \2605";
-    color: rgba(23, 23, 23, 0.533);
+    color: rgba(47, 47, 47, 0.533);
 }
 
-.star-inner::before{
+.star-inner::before {
     content: "\2605 \2605 \2605 \2605 \2605";
     color: #FFD43B;
 }
 
 table {
     border-collapse: collapse;
-  }
-  
-  table tbody {
+}
+
+table tbody {
     border-top: 15px solid white;
+}
+
+.tab-link {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.tab-link::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 10%;
+    width: 0;
+    height: 2px;
+    background-color: green;
+    transition: width 0.3s ease;
   }
+
+  .tab-link:hover::after,
+.tab-link.active::after {
+  width: 80%;
+  animation: underlineAnimation 0.3s ease;
+}
+
+.tab-link.active {
+    color: green;
+}
+
+.tab-content .tab {
+    display: none;
+}
+
+.tab-content .tab.active {
+    display: block;
+    animation: fadeInAnimation 0.3s ease;
+}
+
+@keyframes underlineAnimation {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 80%;
+    }
+}
+
+@keyframes fadeInAnimation {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+.rating {
+    display: inline-block;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    float: right;
+    cursor: pointer;
+    color: #333;
+}
+
+.rating label::before {
+    content: "\2605";
+    font-size: 30px;
+}
+
+.rating input:checked ~ label{
+    color: gold;
+}

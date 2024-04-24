@@ -20,19 +20,36 @@
                         @if (Route::has('login'))
                             <nav class="-mx-3 flex flex-1 justify-end">
                                 @auth
-                                    <a
-                                        href="{{ route('your-shop') }}"
-                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
-                                    >
-                                        My Stores
-                                    </a>
-                                    <div class="border-l my-1.5 opacity-50"></div>
-                                    <a
-                                        href="{{ url('/dashboard') }}"
-                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
-                                    >
-                                        Dashboard
-                                    </a>
+                                <a
+                                    href="{{ route('welcome') }}"
+                                    class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                >
+                                    Home
+                                </a>
+                                <div class="border-l my-1.5 opacity-50"></div>
+                                <a
+                                    href="{{ route('your-shop') }}"
+                                    class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                >
+                                    My Stores
+                                </a>
+                                <div class="border-l my-1.5 opacity-50"></div>
+                                <a
+                                    href="{{ route('show-transact') }}"
+                                    class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                >
+                                    Purchases
+                                </a>
+                                <div class="border-l my-1.5 opacity-50"></div>
+                                <a
+                                href="{{ url('/dashboard') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                <div class="flex items-center">
+                                    <img src="{{ asset('storage/users/' . Auth::user()->image_url)}}" class="size-5 rounded-full mr-1.5">
+                                    <p>{{Auth::user()->username}}</p>
+                                </div>
+                            </a>
                                 @else
                                 @if (Route::has('register'))
                                         <a
@@ -48,8 +65,6 @@
                                     >
                                         Login
                                     </a>
-
-                                    
                                 @endauth
                             </nav>
                         @endif
@@ -65,7 +80,13 @@
                                 </button>
                             </div>
                         </div>
-                        <a href="{{route('manage-cart')}}"><i class="fa-solid fa-cart-shopping text-2xl"></i></a>
+                        <div class="relative">
+                            <a href="{{route('manage-cart')}}"><i class="fa-solid fa-cart-shopping text-2xl"></i></a>
+                            @auth
+                                <p class="absolute -top-2 -right-2 bg-[#259B00] text-white text-sm leading-none size-4 text-center rounded-full">{{$shopcart->total_items}}</p>    
+                            @endauth
+                            
+                        </div>
                     </div>
                     <hr></hr>
                     
@@ -73,8 +94,8 @@
             </div>
 
             <div class="px-48 py-10 w-full bg-white">
-                <div class="grid grid-cols-3">
-                    <div class="flex items-center">
+                <div class="grid grid-cols-7">
+                    <div class="flex items-center col-span-3">
                         <img src="{{ asset('storage/merchants/' . $merchant->image_url) }}" class="mr-7 size-20 rounded-full object-cover border shadow">
                         <div>
                         <p class="text-2xl mb-4 font-semibold"> {{$merchant->store_name}} </p>
@@ -84,9 +105,15 @@
                                 </a>
                             </div>
                     </div>
-                    <div class="grid grid-rows-3 gap-3">
-                        <p>Products: <span>{{$merchant->no_of_products}}</span></p>
-                        <p>Rating: <span>{{$merchant->merchant_rating}}</span></p>
+                    <div class="grid grid-rows-3 gap-3 col-span-2">
+                        <p>Products: <span class="text-[#018f07]">{{$merchant->no_of_products}}</span></p>
+                        <p>Rating: <span class="text-[#018f07]">{{$merchant->merchant_rating}} out of 5</span></p>
+                        <p>Reviews: <span class="text-[#018f07]">{{$no_of_ratings}}</span></p>
+                    </div>
+                    <div class="grid grid-rows-3 gap-3 col-span-2">
+                        <p>Location: <span class="text-[#018f07]"> {{$merchant->city}}, {{$merchant->country}}</span></p>
+                        <p>State: <span class="text-[#018f07]">{{$merchant->state}}</span></p>
+                        <p>Joined: <span class="text-[#018f07]">{{$merchant->created_at->format('m/d/Y')}}</span></p>
                     </div>
                 </div>
                 
@@ -94,7 +121,7 @@
 
             {{-- Product Contents --}}
             <div class="bg-[#f5f5f5] py-10">
-            <div class="grid grid-cols-5 mx-48 gap-4 my-7 ">
+            <div class="grid grid-cols-6 mx-48 gap-4 my-7 ">
                 @foreach ($products as $product)
                     <a href="{{ route("product", $product->id) }}">
                         <div class="border bg-white hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150">
@@ -103,11 +130,9 @@
                                 <p class="text-sm h-10">{{ truncateString($product->product_name) }}</p>
                                 <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
                                 <div class="flex flex-row items-center">
-                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                    <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                    <div class="star-outer relative mr-1.5">
+                                        <div class="star-inner-{{$product->id}} absolute h-full top-0 overflow-hidden" style=""></div>
+                                    </div>
                                     <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>
                                 </div>
                                 <div class="flex items-center mt-1.5">
@@ -117,9 +142,20 @@
                             </div>
                         </div>
                     </a>
-                    {{-- @foreach ($product->productImages as $image)
-                        <img src="{{ 'products/' . $image->image_path }}" alt="{{ $product->product_name }}">
-                    @endforeach --}}
+                    <style>
+                        .star-inner-{{$product->id}}::before{
+                            content: "\2605 \2605 \2605 \2605 \2605";
+                            color: #FFD43B;
+                        }
+                    </style>
+                    <script>
+                        function setStarRating(avgRating, starInnerElement) {
+                            const width = (avgRating / 5) * 100 + "%";
+                            starInnerElement.style.width = width;
+                        }
+                        
+                        setStarRating({{ $product->product_rating }}, document.querySelector('.star-inner-{{$product->id}}'));
+                    </script>
                 @endforeach
             </div>
         </div>
