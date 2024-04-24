@@ -22,6 +22,13 @@
                         <nav class="-mx-3 flex flex-1 justify-end">
                             @auth
                             <a
+                                        href="{{ route('welcome') }}"
+                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                                    >
+                                        Home
+                                    </a>
+                                    <div class="border-l my-1.5 opacity-50"></div>
+                                    <a
                                         href="{{ route('your-shop') }}"
                                         class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                                     >
@@ -29,11 +36,21 @@
                                     </a>
                                     <div class="border-l my-1.5 opacity-50"></div>
                                     <a
-                                        href="{{ url('/dashboard') }}"
+                                        href="{{ route('show-transact') }}"
                                         class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                                     >
-                                        Dashboard
+                                        Purchases
                                     </a>
+                                    <div class="border-l my-1.5 opacity-50"></div>
+                                    <a
+                                href="{{ url('/dashboard') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                <div class="flex items-center">
+                                    <img src="{{ asset('storage/users/' . Auth::user()->image_url)}}" class="size-5 rounded-full mr-1.5">
+                                    <p>{{Auth::user()->username}}</p>
+                                </div>
+                            </a>
                             @else
                             @if (Route::has('register'))
                             <a href="{{ route('register') }}"
@@ -58,7 +75,6 @@
                         <div class="border-l-2 border-neutral-600 mx-5"></div>
                         <h1 class="text-xl font-bold">Seller Management</h1>
                     </div>
-                    <a href="#"><i class="fa-solid fa-cart-shopping text-2xl"></i></a>
                 </div>
                 <hr>
                 </hr>

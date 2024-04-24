@@ -22,22 +22,34 @@
                         <nav class="-mx-3 flex flex-1 justify-end">
                             @auth
                             <a
-                                        href="{{ route('welcome') }}"
-                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
-                                    >
-                                        Home
-                                    </a>
-                                    <div class="border-l my-1.5 opacity-50"></div>
+                                href="{{ route('welcome') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                Home
+                            </a>
+                            <div class="border-l my-1.5 opacity-50"></div>
                             <a
-                                        href="{{ route('your-shop') }}"
-                                        class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
-                                    >
-                                        My Stores
-                                    </a>
-                                    <div class="border-l my-1.5 opacity-50"></div>
-                            <a href="{{ url('/dashboard') }}"
-                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white">
-                                Dashboard
+                                href="{{ route('your-shop') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                My Stores
+                            </a>
+                            <div class="border-l my-1.5 opacity-50"></div>
+                            <a
+                                href="{{ route('show-transact') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                Purchases
+                            </a>
+                            <div class="border-l my-1.5 opacity-50"></div>
+                            <a
+                                href="{{ url('/dashboard') }}"
+                                class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
+                            >
+                                <div class="flex items-center">
+                                    <img src="{{ asset('storage/users/' . Auth::user()->image_url)}}" class="size-5 rounded-full mr-1.5">
+                                    <p>{{Auth::user()->username}}</p>
+                                </div>
                             </a>
                             @else
                             @if (Route::has('register'))
@@ -58,19 +70,21 @@
                     </div>
                 </header>
                 <div class="my-5 mx-48 flex justify-between items-center">
-                    <p class="text-xl font-bold">AgroShop</p>
-                    
-                    <a href="#"><i class="fa-solid fa-cart-shopping text-2xl"></i></a>
+                    <div class="flex">
+                        <p class="text-xl font-bold">AgroShop</p>
+                        <div class="border-l-2 border-neutral-600 mx-5"></div>
+                        <h1 class="text-xl font-bold">Manage Shop</h1>
+                    </div>
                 </div>
                 <hr>
                 </hr>
             </div>
         </div>
 
-        <div class="px-48 flex w-full mt-10 justify-between">
+        <div class="px-48 flex w-full mt-10 justify-between items-center">
             <div>
-                <a href="#" class="py-1.5 px-5 mr-2 text-[#259B00] hover:bg-[#259B00] hover:text-white transition ease-out border-[#259B00] border rounded-full">Orders</a>
-                <a href="#" class="py-1.5 px-5 bg-[#259B00] text-white rounded-full">Products</a>
+                <a href="{{ route('manage-orders', $merchant->id) }}" class="py-1.5 px-5 mr-2 text-[#259B00] hover:bg-[#259B00] hover:text-white transition ease-out border-[#259B00] border rounded-full">Orders</a>
+                <a href="{{ route('manage-shop', $merchant->id) }}" class="py-1.5 px-5 bg-[#259B00] text-white rounded-full">Products</a>
             </div>
             <div class="relative w-3/12 flex justify-center">
                 <input type="text" placeholder="Search for Products"
@@ -84,14 +98,26 @@
         </div>
 
         <div class="mx-48 mt-6 px-7 py-5 flex items-center bg-white rounded-md shadow">
-            <div class="flex items-center">
-                @if($merchant->image_url == null)
-                    <img src="{{ asset('storage/merchants/unknown.jpg') }}" class="size-10 object-cover rounded-full border mr-3"/>
-                @else
-                    <img src="{{ asset('storage/merchants/' . $merchant->image_url) }}" class="size-10 object-cover rounded-full border mr-3"/>
-                @endif
-                
-                <h1 class="text-xl"> {{$merchant->store_name}}</h1>
+            <div class="grid grid-cols-7">
+                <div class="flex items-center col-span-3">
+                    @if($merchant->image_url == null)
+                        <img src="{{ asset('storage/merchants/unknown.jpg') }}" class="size-20 mr-5 object-cover rounded-full border mr-3"/>
+                    @else
+                        <img src="{{ asset('storage/merchants/' . $merchant->image_url) }}" class="size-20 mr-5 object-cover rounded-full border mr-3"/>
+                    @endif
+                    
+                    <h1 class="text-2xl"> {{$merchant->store_name}}</h1>
+                </div>
+                <div class="grid grid-rows-3 gap-3 col-span-2">
+                    <p>Products: <span class="text-[#018f07]">{{$merchant->no_of_products}}</span></p>
+                    <p>Rating: <span class="text-[#018f07]">{{$merchant->merchant_rating}} out of 5</span></p>
+                    <p>Reviews: <span class="text-[#018f07]">{{$no_of_ratings}}</span></p>
+                </div>
+                <div class="grid grid-rows-3 gap-3 col-span-2">
+                    <p>Location: <span class="text-[#018f07]"> {{$merchant->city}}, {{$merchant->country}}</span></p>
+                    <p>State: <span class="text-[#018f07]">{{$merchant->state}}</span></p>
+                    <p>Joined: <span class="text-[#018f07]">{{$merchant->created_at->format('m/d/Y')}}</span></p>
+                </div>
             </div>
         </div>
         @if($products->isEmpty())
@@ -107,22 +133,20 @@
 
 
         {{-- Shops --}}
-        <div class="grid grid-cols-5 mx-48 gap-4 mt-3 mb-14">
+        <div class="grid grid-cols-6 mx-48 gap-4 mt-3 mb-14">
             @forelse ($products as $product)
                 <div class="relative border hover:border-[#00B207] hover:-translate-y-px transition ease-in-out duration-150 group shadow-sm">
                     <a href="{{ route("product", $product->id) }}">
                     
-                        <img src="{{ asset('storage/products/' . $product->product_image_url) }}" alt="{{ $product->product_name }}" class="h-48 w-full object-cover">
+                        <img src="{{ asset('storage/products/' . $product->product_image_url) }}" alt="{{ $product->product_name }}" class="h-44 w-full object-cover">
                         <div class="p-3">
                             <p class="text-sm text-neutral-500"> {{ $product->created_at->format('m/d/Y h:i A') }} </p>
                             <p class="text-sm mt-2 h-10">{{ truncateString($product->product_name) }}</p>
                             <p class="text-sm mt-2 text-[#018f07]">₱ <span class="text-lg">{{ $product->price }}</span></p>
                             <div class="flex flex-row items-center mt-1">
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
-                                <i class="fa-regular fa-star text-[10px] mr-0.5"></i>
+                                <div class="star-outer relative mr-1.5">
+                                    <div class="star-inner-{{$product->id}} absolute h-full top-0 overflow-hidden" style=""></div>
+                                </div>
                                 <p class="text-sm ml-2">{{$product->items_sold}} Sold</p>   
                             </div>
                         </div>
@@ -131,8 +155,21 @@
                         </a>
                 </a>
             </div>
+                <style>
+                    .star-inner-{{$product->id}}::before{
+                        content: "\2605 \2605 \2605 \2605 \2605";
+                        color: #FFD43B;
+                    }
+                </style>
+                <script>
+                    function setStarRating(avgRating, starInnerElement) {
+                        const width = (avgRating / 5) * 100 + "%";
+                        starInnerElement.style.width = width;
+                    }
+                    
+                    setStarRating({{ $product->product_rating }}, document.querySelector('.star-inner-{{$product->id}}'));
+                </script>
                 @empty
-
             @endforelse
         </div>
 
