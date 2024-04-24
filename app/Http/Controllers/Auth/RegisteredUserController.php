@@ -53,7 +53,6 @@ class RegisteredUserController extends Controller
         $cart = new ShoppingCart;
         $cart->user_id = $user->id;
         $cart->total_items = 0;
-        $cart->total_cost = 0.0;
         $cart->saveOrFail();
 
         return redirect(route('continue-profile', absolute: false));
