@@ -22,13 +22,17 @@ class RatingController extends Controller
     }
 
     public function delete(Ratings $rating){
+
+        $product = $rating->product;
+        $merchant = $rating->product->merchant;
+
         $rating->delete();
 
-        $rating->product->product_rating = Ratings::where('product_id', $rating->product->id)->avg('rating');
-        $rating->product->saveOrFail();
+        $product->product_rating = Ratings::where('product_id', $product->id)->avg('rating');
+        $product->saveOrFail();
 
-        $rating->product->merchant->merchant_rating = Products::where('merchant_id', $rating->product->merchant->id)->avg('product_rating');
-        $rating->product->merchant->saveOrFail();
+        $product->merchant->merchant_rating = Products::where('merchant_id', $product->merchant->id)->where('product_rating', "!=", 0.0)->avg('product_rating');
+        $merchant->saveOrFail();
 
         return redirect()->route('show-transact');
     }
@@ -42,7 +46,7 @@ class RatingController extends Controller
         $rating->product->product_rating = Ratings::where('product_id', $rating->product->id)->avg('rating');
         $rating->product->saveOrFail();
 
-        $rating->product->merchant->merchant_rating = Products::where('merchant_id', $rating->product->merchant->id)->avg('product_rating');
+        $rating->product->merchant->merchant_rating = Products::where('merchant_id', $rating->product->merchant->id)->where('product_rating', "!=", 0.0)->avg('product_rating');
         $rating->product->merchant->saveOrFail();
 
         return redirect()->back();
@@ -66,6 +70,7 @@ class RatingController extends Controller
             $product->saveOrFail();
 
             $product->merchant->merchant_rating = Products::where('merchant_id', $product->merchant->id)->avg('product_rating');
+            $product->merchant->merchant_rating = Products::where('merchant_id', $product->merchant->id)->where('product_rating', "!=", 0.0)->avg('product_rating');
             $product->merchant->saveOrFail();
 
             $ratings = Ratings::where('product_id', $product->id)

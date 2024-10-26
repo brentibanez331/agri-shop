@@ -24,28 +24,21 @@ class ProductSeeder extends Seeder
 
 
                 Specifications:
-                
-                size：1M*400M
-                
+    
+                size：1M*400
+
                 Uses: Heat preservation and moisture retention, anti-tensile and wear-resisting, long service life, etc.
                 
                 Application:
-                
                 Overall ground protection, seedling bed base, material lap, laying cushion layer construction.
-                
                 Agriculture Black Film Vegetable Planting Plastic Mulching Film Plants Control Keep Warm Grow Film
-                
                 Mulch films retain moisture thus boost crop yields
-                
                 Prevent weeds growth
-                
                 Easy cleanup and maintenance
-                
                 Suppress weeds that make garden of farm neat and easy access
-                
                 Conserve water for much easier crop growth and production
-                
                 Intercept sunlight which help warming the soil result for faster growth of the plants or vegetables',
+                
                 'no_of_stocks' => 100,
                 'product_rating' => 5.0,
                 'product_image_url' => '1713745371.jpg',
@@ -57,7 +50,6 @@ class ProductSeeder extends Seeder
             [
                 // John Doe -- aquotool.ph
                 'merchant_id' => 2,
-
                 // Farming Equipment
                 'tag_id' => 1,
                 'product_name' => 'Seedling Tray, Holes Gardening Germination Trays Starter Kit',

@@ -23,7 +23,6 @@ return new class extends Migration
             $table->string('image_url')->nullable()->default('unknown.jpg');
             $table->date('birthdate')->nullable();
             $table->string('gender')->nullable();
-            // $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

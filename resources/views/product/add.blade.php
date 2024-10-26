@@ -43,7 +43,7 @@
                                     </a>
                                     <div class="border-l my-1.5 opacity-50"></div>
                                     <a
-                                href="{{ url('/dashboard') }}"
+                                    href="{{ route('profile') }}"
                                 class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                             >
                                 <div class="flex items-center">
@@ -70,9 +70,12 @@
                     </div>
                 </header>
                 <div class="my-5 mx-64 flex justify-between items-center">
-                    <div class="flex">
-                        <p class="text-xl font-bold">AgroShop</p>
-                        <div class="border-l-2 border-neutral-600 mx-5"></div>
+                    <div class="flex items-center">
+                        <div class="flex items-center">
+                            <img src="{{asset('images/logo.png')}}" class="size-10 mr-3">
+                            <p class="text-2xl font-bold">Agronex</p>
+                        </div>
+                        <div class="border-l-2 h-10 border-neutral-600 mx-5"></div>
                         <h1 class="text-xl font-bold">Product Registration</h1>
                     </div>
                 </div>
@@ -136,6 +139,7 @@
                         @endforeach
                     </select>
                 </div>
+
                 <div class="flex flex-col mb-5 w-full mt-4">
                     <p class="text-md">Available Stocks</p>
                     <div class="flex">
@@ -152,6 +156,7 @@
                         <button type="button" id="plus-btn2" class="w-10 border hover:border-neutral-700 transition ease-in-out duration-150 h-8 border-neutral-300">+</button>
                     </div>
                 </div>
+
                 <p class="text-md leading-6 mt-7 mb-2">Upload an Image of the Product <em>(e.g. jpg, jpeg, png, max: 2 MB)</em></p>
                 <div class="flex">
                     <div id="image-preview" class=""></div>

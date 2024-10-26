@@ -28,20 +28,27 @@ class UserController extends Controller
         ]);
 
         try{
+            $newPhotoFileName = "";
             if ($request->hasFile('photo')) {
-                $photoPath = $request->file('photo')->store('users', 'public');
-                $photoFileName = basename($photoPath);
-            } else {
-                $photoFileName = null;
+                // Delete the previous image from storage
+                $previousImagePath = 'public/users/' . $user->image_url;
+                if (Storage::exists($previousImagePath) && $user->image_url != "unknown.jpg") {
+                    Storage::delete($previousImagePath);
+                }
+    
+                // Upload the new photo to storage
+                $newPhotoFileName = time() . '.' . $request->photo->extension();
+                $request->photo->storeAs('public/users', $newPhotoFileName);
+                $user->image_url = $newPhotoFileName;
             }
 
-            $user->username = $validatedData['username'];
-            $user->address = $validatedData['address']; // Assign the address field
-            $user->phone_number = $validatedData['phone_number'];
-            $user->birthdate = $validatedData['birthdate'];
-            $user->gender = $validatedData['gender'];
-            $user->image_url = $photoFileName;
-            $user->save(); // Save the changes
+            $user->update([
+                'username' => $validatedData['username'],
+                'address' => $validatedData['address'],
+                'email' => $validatedData['phone_number'],
+                'birthdate' => $validatedData['birthdate'],
+                'gender' => $validatedData['gender'],
+            ]);
 
             return redirect()->route('welcome');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {

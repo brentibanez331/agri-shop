@@ -52,7 +52,6 @@ class UserSeeder extends Seeder
                 'birthdate' => null,
                 'address' => 'Woodside 1, Bacolod City, PH',
                 'phone_number' => '+639062223560',
-                // 'image_url' => null,
                 'gender' => 'Male'
             ],
 
@@ -66,7 +65,6 @@ class UserSeeder extends Seeder
                 'birthdate' => Carbon::parse('2004-01-10')->format('Y-m-d'),
                 'address' => 'Brgy. Cabug, Bacolod City, PH',
                 'phone_number' => '+6390622456654',
-                // 'image_url' => null,
                 'gender' => 'Female'
             ],
 
@@ -80,7 +78,6 @@ class UserSeeder extends Seeder
                 'birthdate' => Carbon::parse('2002-09-11')->format('Y-m-d'),
                 'address' => 'Woodside 1, Bacolod City, PH',
                 'phone_number' => '+6393422478854',
-                // 'image_url' => null,
                 'gender' => 'Non-binary'
             ]
         ]);

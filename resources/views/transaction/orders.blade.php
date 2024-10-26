@@ -45,7 +45,7 @@
                             </a>
                             <div class="border-l my-1.5 opacity-50"></div>
                             <a
-                                href="{{ url('/dashboard') }}"
+                                href="{{ route('profile') }}"
                                 class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                             >
                                 <div class="flex items-center">
@@ -72,9 +72,12 @@
                     </div>
                 </header>
                 <div class="my-5 mx-48 flex justify-between items-center">
-                    <div class="flex">
-                        <p class="text-xl font-bold">AgroShop</p>
-                        <div class="border-l-2 border-neutral-600 mx-5"></div>
+                    <div class="flex items-center">
+                        <div class="flex items-center">
+                            <img src="{{asset('images/logo.png')}}" class="size-10 mr-3">
+                            <p class="text-2xl font-bold">Agronex</p>
+                        </div>
+                        <div class="border-l-2 h-10 border-neutral-600 mx-5"></div>
                         <h1 class="text-xl font-bold">Your Orders</h1>
                     </div>
                     <div class="relative">
@@ -139,7 +142,10 @@
                             @if($trans->status == "Pending")
                                 <a class="text-red-500 border-red-500 border py-1 hover:bg-red-500 hover:text-white transition ease-in-out w-9/12" href="{{route('cancel-order', $trans->id)}}">Cancel</a>
                             @elseif($trans->status == "Successful")
-                                @if($ratings->where('product_id', $trans->product_id)->get()->isEmpty())
+                            @php
+                                $hasRated = \App\Models\Ratings::hasRatedProduct($trans->product_id, Auth::user()->id);
+                            @endphp
+                                @if(!$hasRated)
                                     <a class="text-blue-500 border-blue-500 border py-1 hover:bg-blue-500 hover:text-white transition ease-in-out w-9/12" href="{{route('rate', $trans->id)}}">Rate</a>
                                 @else
                                     <a class="text-blue-500 border-blue-500 border py-1 hover:bg-blue-500 hover:text-white transition ease-in-out w-9/12" href="{{route('edit-review', $trans->product->id)}}">Edit Rate</a>
@@ -154,6 +160,7 @@
                 <div class="my-28 text-center">
                     <h2 class="text-3xl">We're not that broke are we?😞</h2>
                     <p>Choose from a variety of products!</p>
+                    <div class="mx-48 my-5 flex justify-center"><a href="{{route('welcome')}}" class="bg-[#259B00] px-4 py-1 rounded-full hover:opacity-70 transition ease-in-out text-white">Start Browsing</a></div>
                 </div>
             @endforelse
         </div>

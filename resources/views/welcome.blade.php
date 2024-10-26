@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Agronex</title>
         @vite('resources/css/app.css')
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -42,7 +42,7 @@
                                     </a>
                                     <div class="border-l my-1.5 opacity-50"></div>
                                     <a
-                                href="{{ route('edit-profile') }}"
+                                href="{{ route('profile') }}"
                                 class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                             >
                                 <div class="flex items-center">
@@ -73,7 +73,10 @@
                     </div>
                     </header>
                     <div class="my-5 mx-48 flex justify-between items-center">
-                        <p class="text-xl font-bold">AgroShop</p>
+                        <div class="flex items-center">
+                            <img src="images/logo.png" class="size-10 mr-3">
+                            <p class="text-2xl font-bold">Agronex</p>
+                        </div>
                         <div class="relative w-7/12 flex justify-center">
                             <input type="text" placeholder="Search for Products" class="w-full transition ease-in-out duration-300 focus:ring-0 focus:border-slate-500 rounded-sm border-slate-300" >
                             <div class="absolute inset-y-0 right-0 pr-1 flex items-center">
@@ -152,7 +155,7 @@
                                 </div>
                                 <div class="flex items-center mt-1.5">
                                     <i class="fa-solid fa-location-dot mr-1.5" style="color: #797979;"></i>
-                                    <p class="text-xs text-[#797979]">{{ $product->merchant->city }}, {{ $product->merchant->country }}</p>
+                                    <p class="text-xs text-[#797979]">{{ $product->merchant->city }}, {{ $product->merchant->state }}</p>
                                 </div>
                             </div>
                         </div>

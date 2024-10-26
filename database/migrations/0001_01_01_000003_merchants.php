@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('merchants', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('store_name');
+            $table->string('store_name')->unique();
             $table->integer('no_of_products');
             $table->decimal('merchant_rating', 8, 1);
             $table->text('image_url')->nullable()->default('unknown.jpg');

@@ -43,7 +43,7 @@
                             </a>
                             <div class="border-l my-1.5 opacity-50"></div>
                             <a
-                                href="{{ url('/dashboard') }}"
+                            href="{{ route('profile') }}"
                                 class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                             >
                                 <div class="flex items-center">
@@ -70,9 +70,12 @@
                     </div>
                 </header>
                 <div class="my-5 mx-48 flex justify-between items-center">
-                    <div class="flex">
-                        <p class="text-xl font-bold">AgroShop</p>
-                        <div class="border-l-2 border-neutral-600 mx-5"></div>
+                    <div class="flex items-center">
+                        <div class="flex items-center">
+                            <img src="{{asset('images/logo.png')}}" class="size-10 mr-3">
+                            <p class="text-2xl font-bold">Agronex</p>
+                        </div>
+                        <div class="border-l-2 h-10 border-neutral-600 mx-5"></div>
                         <h1 class="text-xl font-bold">Manage Shop</h1>
                     </div>
                 </div>

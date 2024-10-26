@@ -106,6 +106,8 @@ class ProductController extends Controller
         try {
             // Your code that may throw an exception
             if ($request->hasFile('photo')) {
+
+                
                 $photoPath = $request->file('photo')->store('products', 'public');
                 $photoFileName = basename($photoPath);
             } else {

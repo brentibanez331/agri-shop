@@ -43,7 +43,7 @@
                                     </a>
                                     <div class="border-l my-1.5 opacity-50"></div>
                                     <a
-                                href="{{ url('/dashboard') }}"
+                                    href="{{ route('profile') }}"
                                 class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                             >
                                 <div class="flex items-center">
@@ -70,9 +70,12 @@
                     </div>
                 </header>
                 <div class="my-5 mx-64 flex justify-between items-center">
-                    <div class="flex">
-                        <p class="text-xl font-bold">AgroShop</p>
-                        <div class="border-l-2 border-neutral-600 mx-5"></div>
+                    <div class="flex items-center">
+                        <div class="flex items-center">
+                            <img src="{{asset('images/logo.png')}}" class="size-10 mr-3">
+                            <p class="text-2xl font-bold">Agronex</p>
+                        </div>
+                        <div class="border-l-2 h-10 border-neutral-600 mx-5"></div>
                         <h1 class="text-xl font-bold">Product Management</h1>
                     </div>
                 </div>
@@ -115,9 +118,10 @@
           @endforeach
         @endif
 
-        <div class="mx-64 my-7 bg-white shadow rounded-md">
             
-            <form class="w-full p-10 flex flex-col" method="POST" action="{{ route('update-product', $product->id) }}" enctype="multipart/form-data">
+            <form class="" method="POST" action="{{ route('update-product', $product->id) }}" enctype="multipart/form-data">
+                <div class="mx-64 my-7 bg-white shadow rounded-md">
+                    <div class="w-full p-10 flex flex-col">
                 <h3 class="text-2xl mb-3.5"><i class="fa-regular fa-pen-to-square mr-2 text-[#259B00]"></i>Update Product Information</h3>
                 @if (session('message'))
                 <div
@@ -191,8 +195,9 @@
                     <button class="rounded-full bg-[#259B00] py-1.5 w-2/12 text-white mt-10 mr-3">Update </button>
                     <a href="{{ route('manage-shop', $merchant->id) }}" class="rounded-full border text-center border-[#259B00] py-1.5 w-2/12 mt-10">Cancel </a>
                 </div>
+            </div>
+            </div>
             </form>
-        </div>
         <div class="mx-64 my-10 p-10 flex flex-col bg-white shadow rounded-md">
             <h3 class="text-xl mb-3.5">Delete Product</h3>
             <p class="w-7/12">
@@ -225,7 +230,19 @@
             currImage.style.display = 'block';
           }
         }
-        </script>
+        
+        const voucherButton = document.getElementById('voucher-button');
+        const voucherInput = document.getElementById('voucher-input');
+
+        voucherButton.addEventListener('click', function() {
+            voucherInput.classList.toggle('hidden');
+            if (voucherInput.classList.contains('hidden')) {
+                voucherButton.textContent = '+ Add a Voucher';
+            } else {
+                voucherButton.textContent = '- Remove Voucher';
+            }
+        });
+    </script>
 </body>
 
 </html>

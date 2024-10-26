@@ -46,7 +46,10 @@
             </div>
             </header>
             <div class="my-5 mx-64 flex justify-between items-center">
-                <p class="text-xl font-bold">AgroShop</p>
+                <div class="flex items-center">
+                    <img src="{{asset('images/logo.png')}}" class="size-10 mr-3">
+                    <p class="text-2xl font-bold">Agronex</p>
+                </div>
                 <div class="relative w-7/12 flex justify-center">
                     <input type="text" placeholder="Search for Products" class="w-full transition ease-in-out duration-300 focus:ring-0 focus:border-slate-500 rounded-sm border-slate-300" >
                     <div class="absolute inset-y-0 right-0 pr-1 flex items-center">
@@ -118,7 +121,6 @@
                 </div>
             </div>
             <div class="mt-10 flex justify-center">
-                <a href="{{route('welcome')}}" class="rounded-full w-40 text-center border-[#018f07] border bg-[#d1edd3] hover:bg-[#e4ede4] transition ease-in-out duration-150 px-10 py-2 mr-3 text-[#018f07]">Skip</a>
                 <button class="rounded-full w-40 text-center border-[#259B00] bg-[#259B00] hover:bg-[#2FB605] transition ease-in-out duration-150 text-white border px-10 py-2">
                     Done!
                 </button>

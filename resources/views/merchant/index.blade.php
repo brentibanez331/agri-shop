@@ -43,7 +43,7 @@
                             </a>
                             <div class="border-l my-1.5 opacity-50"></div>
                             <a
-                                href="{{ url('/dashboard') }}"
+                            href="{{ route('profile') }}"
                                 class="rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:opacity-50 focus:outline-none focus-visible:ring-[#FF2D20] dark:focus-visible:ring-white"
                             >
                                 <div class="flex items-center">
@@ -70,9 +70,12 @@
                     </div>
                 </header>
                 <div class="my-5 mx-48 flex justify-between items-center">
-                    <div class="flex">
-                        <p class="text-xl font-bold">AgroShop</p>
-                        <div class="border-l-2 border-neutral-600 mx-5"></div>
+                    <div class="flex items-center">
+                        <div class="flex items-center">
+                            <img src="{{asset('images/logo.png')}}" class="size-10 mr-3">
+                            <p class="text-2xl font-bold">Agronex</p>
+                        </div>
+                        <div class="border-l-2 h-10 border-neutral-600 mx-5"></div>
                         <h1 class="text-xl font-bold">My Stores</h1>
                     </div>
                 </div>
@@ -81,11 +84,13 @@
             </div>
         </div>
 
-        <div class="mx-48 my-5 flex justify-end"><a href="{{route('add-shop')}}" class="bg-[#259B00] px-4 py-1 rounded-full hover:opacity-70 transition ease-in-out text-white">+ Create E-Shop</a></div>
+        @if(!$shops->isEmpty())
+            <div class="mx-48 my-5 flex justify-end"><a href="{{route('add-shop')}}" class="bg-[#259B00] px-4 py-1 rounded-full hover:opacity-70 transition ease-in-out text-white">+ Create E-Shop</a></div>
+        @endif
         {{-- Shops --}}
 
         <div class="mx-48 my-7 grid grid-cols-3 gap-10">
-            @foreach ($shops as $shop)
+            @forelse ($shops as $shop)
             <div class="border flex flex-col justify-center items-center py-7 rounded-md bg-white shadow hover:-translate-y-0.5 transition ease-in-out duration-150">
                 @if($shop->image_url == null)
                     <img src="{{ asset('storage/merchants/unknown.jpg') }}" class="rounded-full size-36 object-cover shadow" />
@@ -120,7 +125,13 @@
                 
                 setStarRating({{ $shop->merchant_rating }}, document.querySelector('.star-inner-{{$shop->id}}'));
             </script>
-            @endforeach
+            @empty
+            <div class="my-28 col-span-3 text-center">
+                <h2 class="text-3xl text-center mb-2">Start your Earning Journey🤑</h2>
+                <p>Make your very owned online E-Commerce Shop</p>
+                <div class="mx-48 my-5 flex justify-center"><a href="{{route('add-shop')}}" class="bg-[#259B00] px-4 py-1 rounded-full hover:opacity-70 transition ease-in-out text-white">+ Create E-Shop</a></div>
+            </div>
+            @endforelse
         </div>
 
         {{-- Newsletter --}}

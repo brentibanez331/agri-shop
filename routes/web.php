@@ -26,7 +26,7 @@ Route::get('continue-profile', function () {
 
 Route::get('/your-shop', [MerchantController::class, 'getUserShops'])->name('your-shop')->middleware(['auth', 'verified']);
 Route::put('/update-profile', [UserController::class, 'update'])->name('update-profile')->middleware(['auth', 'verified']);
-Route::get('/edit-profile', [UserController::class, 'edit'])->name('edit-profile')->middleware(['auth', 'verified']);
+Route::get('/profile', [UserController::class, 'edit'])->name('profile')->middleware(['auth', 'verified']);
 Route::put('/update-account', [UserController::class, 'account'])->name('update-account')->middleware(['auth', 'verified']);
 Route::get('/delete-profile', [UserController::class, 'delete'])->name('delete-user')->middleware(['auth', 'verified']);
 Route::get('/previous', function () {
@@ -78,11 +78,11 @@ Route::put('/update-review/{rating}', [RatingController::class, 'update'])->name
 Route::get('/delete-review/{rating}', [RatingController::class, 'delete'])->name('delete-review');
 
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 require __DIR__.'/auth.php';
 

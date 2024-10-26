@@ -28,4 +28,11 @@ class Ratings extends Model
     {
         return $this->belongsTo(Products::class, 'product_id', 'id');
     }
+
+    public static function hasRatedProduct($productId, $userId)
+    {
+        return static::where('product_id', $productId)
+                    ->where('user_id', $userId)
+                    ->exists();
+    }
 }
